@@ -138,14 +138,14 @@ def mosaic_edge_cut_out(PI_image, Mo,  plot=False,):
         
         #Plotting the image
         fig, axs = plt.subplots(1,1)
-        # plt.title("The Total Intensity of mosaic "+mosaic, fontsize=20)
+        
         axs.set_title("Weights of mosaic " + Mo.upper(), fontsize=30)
-        # plt.title("The total intensity of the identical double source")
+        
         axs.set_xticks(tck, tickx_labels)
         axs.set_yticks(tck, ticky_labels)
         axs.set_xlabel(r"Longitude $(^\circ)$", fontsize=25)
         axs.set_ylabel (r"Latitude $(^\circ)$", fontsize=25)
-        # PLT = axs.imshow(imA, vmin=-VMIN, vmax=VMAX, cmap="gist_heat",origin='lower')
+        
         PLT = axs.imshow(ImW_ave, cmap="gist_heat",origin='lower')
         
         
@@ -154,7 +154,7 @@ def mosaic_edge_cut_out(PI_image, Mo,  plot=False,):
         
         mask[np.invert(below_threshold)] = np.nan
         axs.imshow(mask, alpha=1,origin='lower', vmax=1, vmin=0)
-        # plt.colorbar(cax=plt.axes([0.93, 0.11,0.02,0.76]))
+        
         
         cbar = fig.colorbar(PLT,)
         ticksforcbar = np.linspace(vmin, vmax ,6)
@@ -255,16 +255,13 @@ Other Parameters:
     
     
     
-    # beam_radius = 0.5#pixel-ish # the smallest beam size is 1.05 so half that is 0.5
+   
     max_radius = float(pf.max_radius)
     
 
 
-    # The following library is a python file I made with many functions I thought might use in
-    #   different codes. I will probably end putting the detection of twins into a function
-    #   or class sometime soon. All the functions have document string with the input 
-    #   parameters defined, and what it returns. 
-    # import Functions as fc
+   
+    
     
     # Importing the astro functions needed from the astro.py library. 
     from astropy.io import fits
