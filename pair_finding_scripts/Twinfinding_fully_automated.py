@@ -736,11 +736,18 @@ def offset_between_PI_and_TI_pairs(s1PI, s2PI, s1TI, s2TI, left_side, bottom):
     
     Parameters:
         s1PI(array-like): the coordinates of the first source in PI, give y then x coordinates
+        
         s2PI(array-like): the coordinates of the second source in PI, give y then x coordinates
+        
         s1TI(array-like): the coordinates of the first source in TI, give y then x coordinates
+        
         s2TI(array-like): the coordinates of the second source in TI, give y then x coordinates
         
+        left_side (int): the x pixel coordinate of the left side of the cutout in 
+                         the mosaic image
         
+        bottom (int): the ypixel coordinate of the bottom of the cutout in the 
+                      mosaic image
         
     Returns:
        within_offset(boo): Whether or not any of the pairs were within the offset max 
@@ -1058,7 +1065,29 @@ def closest_TI_sources_to_PI_pair(s1PI, s2PI, TISources, left_side, bottom):
     
     
 def solo_offset_test(s, center_x, center_y, return_offset=False):
+    """This function determines if the single source detected in TI is within 
+    the correlation region of the twin pairs. This region is located around the 
+    center of the source. 
     
+    Parameters:
+        s (arraylike): an array that contains the coordinates, HWHM, and peak of the solo source
+        
+        center_x (int): the x pixel coordinate of the center of the twins in PI
+        
+        center_y (int): the y pixel coordinate of the center of the twins in PI
+        
+        return_offset (Bool, optional): whether to return the x and y offset. Default is False
+        
+    Returns:
+        
+        within_offset (Bool): returns True if the source in is in the region, returns False otherwise
+        
+        if return_offset is True it also returns:
+            offset_x (int): the offset in pixel coordinates in the x direction
+            
+            offset_y (int): the offset in pixel coordinates in the y direction
+        
+    """
     from parameters_file import max_offset
     
     # Getting the individual coordinates
@@ -1109,7 +1138,32 @@ def print_classifications():
         
 
 def solo_source_central(s, cx,cy, PIs1, PIs2, left_side, bottom):
+    """This function checks if the solo source is closer to the center than it is
+    to the two sources found in PI. If the one source TI is correlated to both sources,
+    it should be closer to the center. 
     
+    Inputs: 
+        s (array): SI Source coodinates
+        
+        cx (int) : x pixel coordinate of the pair in the cutout
+        
+        cy (int) : y pixel coordinate of the pair in the cutout
+        
+        PIs1 (array): pixel coordinates of the first PI source in the mosaic
+        
+        PIs2 (array): pixel coordinates of the second PI source in the mosaic
+        
+        left_side (int): the x pixel coordinate of the left side of the cutout in 
+                         the mosaic image
+        
+        bottom (int): the ypixel coordinate of the bottom of the cutout in the 
+                      mosaic image
+                      
+    Returns:
+        Boolean value, whether or not a the single SI source is closer to one PI 
+        or the center between both sources
+    
+    """
     sx, sy, sr, sp = s
     dist_central = np.sqrt((sx-cx)**2+(sy-cy)**2)
     
@@ -1632,30 +1686,6 @@ Parameters:
     twin_list (list): 
         a list of twin pairs containing the coordinates 
         for each source
-    
-    img_dir (str):
-        the path where the mosaics are stored on the users computer
-    
-    snapshot_width (int): 
-        the length you wish the snapshot to be. 
-        
-        Default is 40
-        
-    num_between (int): 
-        the number of pixels between each tick on the graphs.
-        
-        Default is 8
-        
-    offset_tolarance (float): 
-        The number of beams the correlation region 
-        should be.
-        
-        Default is 3
-    
-    beam_radius (int): 
-        The number of pixels the beam radius is.
-        
-        Default is 2
 
         
     plot_snapshots (Boo): 
@@ -2378,13 +2408,7 @@ def write_dat_file(mosaic, mosaic_dataset,):
     Twin_Detected = mosaic_array[:,2]#.tolist() # true twin detected column
     
     
-    # twin_data  = [mosaic, twin_detected_auto,  binary_classification, \
-    #                t1PI_p, t2PI_p, TI_p1, TI_p2, t1PI_y, t1PI_x, t1PI_r,\
-    #                 t2PI_y, t2PI_x, t2PI_r, t1PI_y_GalCoord, t1PI_x_GalCoord, t1PI_r_GalCoord,\
-    #                 t2PI_y_GalCoord, t2PI_x_GalCoord, t2PI_r_GalCoord, TI_y1, TI_x1, TI_r1,\
-    #                 TI_y2, TI_x2, TI_r2, TI_y_gal_coord1, TI_x_gal_coord1, TI_r_arcsec1, \
-    #                 TI_y_gal_coord2, TI_x_gal_coord2, TI_r_arcsec2, t1_StoN, t2_StoN ]
-    
+   
     
     # Getting the twin 1 values for each pair in the mosaic
     t1_gal_long = np.array(mosaic_array[:, 14] ,dtype="float") # Galactic longitude of twin 1
@@ -2470,46 +2494,40 @@ def write_dat_file(mosaic, mosaic_dataset,):
 
 
 
-def Twin_classifying_multiple_mosaics(mosaics=None, filename="test",  
-                                      pausetime = 3, plot_snapshots=False):#, Mode="a"):
+
+def Twin_classifying_multiple_mosaics(mosaics=None, filename="test", write_dat = True, 
+                                      pausetime = 3, ):
     """
-This function goes through the mosaics indicated and identifies twins within them. 
+    This function goes through the mosaics indicated and identifies twins within them,
+    and takes the user's classification as well. 
+    
+        It creates a csv with all the information about the twins. 
+        This function also asks if any twin pairing were missed in the mosaics.
+        
+    Key Parameters:
+        
+        mosaics (string): 
+            A list of mosaics the user wishes to go through.
+            
+            Default set to prompt for user input. 
+        
+        filename (string):
+            The name of the csv file that is produced. 
+        
+        write_dat (bool):
+            whether to write the .dat files for the twins or pairs found. Default: True
+            
+    Other Parameters:
+        
+        pausetime (int):
+            The amount of time the user initially has to manipulate the plot of the 
+            mosaic in both polarised intensity and Stokes I. 
+    
+    Returns:
+        
+        all_missing_twins (list):
+            A list containing the mosaic, and the number of twins missing in the mosaic. 
 
-    It creates a csv with all the information about the twins. 
-    This function also asks if any twin pairing were missed in the mosaics.
-    
-Key Parameters:
-    
-    mosaics (string): 
-        A list of mosaics the user wishes to go through.
-        
-        Default set to prompt for user input. 
-    
-    filename (string):
-        The name of the csv file that is produced. 
-    
-    csv_path (string):
-        The path to where the user wishes the csv file to be stored. 
-        
-    img_path (string):
-        The path to where the mosaics are stored.
-        
-    Mode (string):
-        Determines if the csv is written or appended to. Use "w" to write and "a"
-        to append. Default is append.
-
-Returns:
-    
-    all_missing_twins (list):
-        A list containing the mosaic, and the number of twins missing in the mosaic. 
-        
-Other Parameters:
-    
-    pausetime (int):
-        The amount of time the user initially has to manipulate the plot of the 
-        mosaic in both polarised intensity and Stokes I. 
-    
-    
 
 """
     import os
