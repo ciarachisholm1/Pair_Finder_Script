@@ -160,83 +160,82 @@ def Potential_Twin_Finder(Mo,
                           plot_individual_sources = False, 
                           return_gal_coord=0,mosaic_overlap=True, PlotPI=False,
                           plot_AGNs=True):
-    """ Finds polarised intensity twins for a given mosaic.
+    """ Finds polarised intensity twins, or pairs, for a given image (or mosaic in the CGPS).
     
-        This function takes in a mosaic from the CGPS dataset and finds galactic 
-        twins or resolved double lobed radio galaxies, and single sources in the 
+        This function takes in a mosaic from the CGPS dataset and finds radio pairs 
+        or resolved double lobed radio galaxies, and single sources in the 
         polarized intensity image. It requires functions previously defined in 
-        the Functions file. It returns the information about the twins, and also 
+        the Functions file. It returns the information about the pairs, and also 
         creates a plot if desired. 
 
 
 
-Key Parameters:
-    
+    Key Parameters:
         
-        Mo (string): 
-            The name of the mosaic you wish to go through the detections for. Example for the ME2 mosaic, Mo='me2'
-
-        Plot_twins (boo): 
-            Whether to produce a plot of the mosaic with the twin and, if selected, the solo sources. Default is True to produce the plot, selecting False will skip the plot making. 
-
-        
-        plot_individual_sources (boo): 
-            Whether to plot the solo sources found in the polarized intensity image. 
             
-            Default is set to False (not plot them).
+            img_name (string): 
+                The name of the mosaic/image you wish to go through the detections for.
+                Example for the ME2 mosaic, Mo='me2'
+    
+            Plot_pairs (boo): 
+                Whether to produce a plot of the mosaic with the pair and, if selected,
+                the solo sources. Default is True to produce the plot, selecting False will skip the plot making. 
+    
+            
+            plot_individual_sources (boo): 
+                Whether to plot the solo sources found in the polarized intensity image. 
+                
+                Default is set to False (not plot them).
+                               
+            return_gal_coord (int):  
+                Whether to return the twin coordinates in galactic coordinates 
+                or pixel coordinates. Default is 0 for pixel coordinates 
+                only, set to 1 for galactic coordinates only, and 2 for both. 
                            
-        return_gal_coord (int):  
-            Whether to return the twin coordinates in galactic coordinates 
-            or pixel coordinates. Default is 0 for pixel coordinates 
-            only, set to 1 for galactic coordinates only, and 2 for both. 
-                       
-            Note, the radius
-            returned in galactic coordinates is in arcseconds. If this parameter 
-            is set to 2 then it will return the pixel coordinates 
-            lists first, then the galactic coordinates will follow
-            for a total of 6 lists. 
+                Note, the radius returned in galactic coordinates is in arcseconds.  
+                If this parameter is set to 2 then it will return the pixel coordinates 
+                lists first, then the galactic coordinates will follow
+                for a total of 6 lists. 
+                               
+            mosaic_overlap (Boo): 
+                Whether to remove the overlap region in the cut out areas 
+                of the mosaic. Automatically set to True, which cuts out the overlap region. 
                            
-        mosaic_overlap (Boo): 
-            Whether to remove the overlap region in the cut out areas 
-            of the mosaic. Automatically set to True, which cuts out the overlap region. 
-                       
+    Other Parameters:
     
-
-
- 
-Returns:
-        twinlist (list):
-            A 3D list of the each of the twin sources. 
-        
-            The row or first dimension inticates which set of twins
-            you are looking at, the second dimension contains the two twin sources, and the third dimension contains 
-            information about the twin source. First it gives the y coordinate of the source, then the x coordinate 
-            (coordinate type depends on parameters), then the radius/HWHM (in pixel units or arcseconds). Results in a 
-            list that looks like: twinlist = [[[y1,x1,r1], [y2,x2,r2]], ...]. Further description is shown below: 
-            twinlist[0] = [twin1,twin2], twinlist[0,0] = twin1 = [y1,x1,r1], twinlist[0,1] = twin2 = [y2,x2,r2], 
-            twinlist[0,0,0] = y1. 
-        
-        distlist (list): 
-            1D list containing the distance between the twin sets. 
-
-        twincentres (list): 
-            2D list containing the coordinates of the centre of the twins set. This is intended to be used to 
-            take a snapshot of the area containing the twins to feed into the next part of the algorithm. 
-            twincentres[0]= [y,x] gives the coordinates of the centre of the pair. 
-
+            PlotPI (boo): 
+                Whether to plot the Polarized intensity without the detected sources. 
+                          
+                Default set to False. 
     
-Other Parameters:
-
-        PlotPI (boo): 
-            Whether to plot the Polarized intensity without the detected sources. 
-                      
-            Default set to False. 
-
-        plot_AGNs (bool): whether to plot the AGNs from Simbad. 
+            plot_AGNs (bool): whether to plot the AGNs from Simbad.             
         
     
     
-    """
+     
+    Returns:
+            twinlist (list):
+                A 3D list of the each of the twin sources. 
+            
+                The row or first dimension inticates which set of twins
+                you are looking at, the second dimension contains the two twin sources, and the third dimension contains 
+                information about the twin source. First it gives the y coordinate of the source, then the x coordinate 
+                (coordinate type depends on parameters), then the radius/HWHM (in pixel units or arcseconds). Results in a 
+                list that looks like: twinlist = [[[y1,x1,r1], [y2,x2,r2]], ...]. Further description is shown below: 
+                twinlist[0] = [twin1,twin2], twinlist[0,0] = twin1 = [y1,x1,r1], twinlist[0,1] = twin2 = [y2,x2,r2], 
+                twinlist[0,0,0] = y1. 
+            
+            distlist (list): 
+                1D list containing the distance between the twin sets. 
+    
+            twincentres (list): 
+                2D list containing the coordinates of the centre of the twins set. This is intended to be used to 
+                take a snapshot of the area containing the twins to feed into the next part of the algorithm. 
+                twincentres[0]= [y,x] gives the coordinates of the centre of the pair. 
+    
+        
+
+        """
     from RM_StoN import RM_code_StoN
     import parameters_file as pf
     
@@ -543,7 +542,6 @@ Other Parameters:
        wx, wy, f, meh = w.all_pix2world(ticksx, ticksy,0,0,1)
        
        # Setting the number of ticks to be displayed on the plot
-       # tck = [n for n in range(0,1024,pf.num_of_pixels_btw_ticks)]
        tck = [n for n in range(0, len(PIim1[0]),1)]
        # Getting the labels of the x and y ticks
        tickx_labels = np.round(wx[tck],2)
@@ -815,11 +813,7 @@ Other Parameters:
     
 
 
-# Mf2 had the different radii detection and it has things classed as twins that 
-#   I think are too far apart to be actual twins. 
-# MF1 appears to only have false detections 
 
-# t, d, c = Potential_Twin_Finder("mk1", plot_individual_sources=True,  plot_AGNs=True)
 
 
 def pixel_to_galactic_coordinates_axis(mosaic):
@@ -878,11 +872,18 @@ def offset_between_PI_and_TI_pairs(s1PI, s2PI, s1TI, s2TI, left_side, bottom):
     
     Parameters:
         s1PI(array-like): the coordinates of the first source in PI, give y then x coordinates
+        
         s2PI(array-like): the coordinates of the second source in PI, give y then x coordinates
+        
         s1TI(array-like): the coordinates of the first source in TI, give y then x coordinates
+        
         s2TI(array-like): the coordinates of the second source in TI, give y then x coordinates
         
+        left_side (int): the x pixel coordinate of the left side of the cutout in 
+                         the mosaic image
         
+        bottom (int): the ypixel coordinate of the bottom of the cutout in the 
+                      mosaic image
         
     Returns:
        within_offset(boo): Whether or not any of the pairs were within the offset max 
@@ -1278,7 +1279,30 @@ def print_classifications():
 def solo_source_central(s, cx,cy, PIs1, PIs2, left_side, bottom):
     """This function checks if the solo source is closer to the center than it is
     to the two sources found in PI. If the one source TI is correlated to both sources,
-    it should be closer to the center. """
+    it should be closer to the center. 
+    
+    Inputs: 
+        s (array): SI Source coodinates
+        
+        cx (int) : x pixel coordinate of the pair in the cutout
+        
+        cy (int) : y pixel coordinate of the pair in the cutout
+        
+        PIs1 (array): pixel coordinates of the first PI source in the mosaic
+        
+        PIs2 (array): pixel coordinates of the second PI source in the mosaic
+        
+        left_side (int): the x pixel coordinate of the left side of the cutout in 
+                         the mosaic image
+        
+        bottom (int): the ypixel coordinate of the bottom of the cutout in the 
+                      mosaic image
+                      
+    Returns:
+        Boolean value, whether or not a the single SI source is closer to one PI 
+        or the center between both sources
+    
+    """
     
     sx, sy, sr, sp = s
     dist_central = np.sqrt((sx-cx)**2+(sy-cy)**2)
@@ -1315,9 +1339,16 @@ def TI_twin_detector_and_binary_pair_classifiers(TI_cutout_sources, c, twinPI, l
         
         twinPI (array): the coordinates of the twin pair in polarised intensity, 
                         [[y1,x1],[y2,x2]].
+                        
+        left_side (int): the x pixel coordinate of the left side of the cutout in the 
+                         mosaic image
+        
+        bottom (int): the ypixel coordinate of the bottom of the cutout in the 
+                         mosaic image
                     
         return_sibling_sources (Boo): Whether to return the sibling source list or not.
             Default is False. 
+            
     Returns: pair_classifications, TI_twins, all_twin_sources, solo_sources, 
         pair_classifications: a list containing the classification of each cutout
         
@@ -2454,9 +2485,6 @@ Returns:
             circle3= plt.Circle((t1x,t1y), pf.radius_scale*t1r, color="lime", fill=False, linewidth=2, linestyle=":")
             circle4= plt.Circle((t2x,t2y), pf.radius_scale*t2r, color="lime", fill=False, linewidth=2, linestyle=":")
          
-            # # Creating the circles for the offset/correlation region in 
-            # Offset_region1 = plt.Circle((t1x,t1y), pf.max_offset, color="silver", fill=False, linewidth=2, linestyle="--")
-            # Offset_region2 = plt.Circle((t2x,t2y), pf.max_offset, color="silver", fill=False, linewidth=2, linestyle="--")
             
             # Adding the circles to the plots
             ax1.add_patch(circle1)
@@ -2882,47 +2910,39 @@ def write_dat_file(mosaic, mosaic_dataset,):
 
 
 
-def Twin_classifying_multiple_mosaics(mosaics=None, filename="test",  
-                                      pausetime = 3, write_dat = True):#, Mode="a"):
+def Twin_classifying_multiple_mosaics(mosaics=None, filename="test", write_dat = True, 
+                                      pausetime = 3, ):
     """
-This function goes through the mosaics indicated and identifies twins within them,
-and takes the user's classification as well. 
+    This function goes through the mosaics indicated and identifies twins within them,
+    and takes the user's classification as well. 
+    
+        It creates a csv with all the information about the twins. 
+        This function also asks if any twin pairing were missed in the mosaics.
+        
+    Key Parameters:
+        
+        mosaics (string): 
+            A list of mosaics the user wishes to go through.
+            
+            Default set to prompt for user input. 
+        
+        filename (string):
+            The name of the csv file that is produced. 
+        
+        write_dat (bool):
+            whether to write the .dat files for the twins or pairs found. Default: True
+            
+    Other Parameters:
+        
+        pausetime (int):
+            The amount of time the user initially has to manipulate the plot of the 
+            mosaic in both polarised intensity and Stokes I. 
+    
+    Returns:
+        
+        all_missing_twins (list):
+            A list containing the mosaic, and the number of twins missing in the mosaic. 
 
-    It creates a csv with all the information about the twins. 
-    This function also asks if any twin pairing were missed in the mosaics.
-    
-Key Parameters:
-    
-    mosaics (string): 
-        A list of mosaics the user wishes to go through.
-        
-        Default set to prompt for user input. 
-    
-    filename (string):
-        The name of the csv file that is produced. 
-    
-    csv_path (string):
-        The path to where the user wishes the csv file to be stored. 
-        
-    img_path (string):
-        The path to where the mosaics are stored.
-        
-    Mode (string):
-        Determines if the csv is written or appended to. Use "w" to write and "a"
-        to append. Default is append.
-
-Returns:
-    
-    all_missing_twins (list):
-        A list containing the mosaic, and the number of twins missing in the mosaic. 
-        
-Other Parameters:
-    
-    pausetime (int):
-        The amount of time the user initially has to manipulate the plot of the 
-        mosaic in both polarised intensity and Stokes I. 
-    
-    
 
 """
     import os
@@ -3186,6 +3206,15 @@ missing = Twin_classifying_multiple_mosaics(mosaics=mosaics_to_go_through, filen
 
 
 def write_dat_from_csv(csv_dir=None):
+    """This function writes .dat files from a csv of pair or twin sources from 
+    pair finder script. 
+    
+    Input Parameters:
+        csv_dir: the path to the csv
+        
+    Final output:
+        writes .dat files for the pairs in each mosaic to wherever the 
+        RM_out_dir defined in the parameters file. """
     if csv_dir == None:
         csv_dir = """/Users/ciarachisholm/Library/CloudStorage/OneDrive-UniversityofCalgary/Ciara's Research Cubby/Codes/TwinFinding/FinalRound/Final_Twin_List_twins_only.csv"""
 
