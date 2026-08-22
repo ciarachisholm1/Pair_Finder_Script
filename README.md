@@ -1,4 +1,4 @@
-# pair_finder_draft
+# Pair Finder Script
 The code I created to find closely spaced pairs in the CGPS polarised intensity images. This code was created before I knew the previously determined names for physical and random pairs, so many times I refer to the pairs as "twins". 
 
 
