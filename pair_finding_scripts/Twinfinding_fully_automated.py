@@ -2495,14 +2495,12 @@ def write_dat_file(mosaic, mosaic_dataset,):
 
 
 
-def Twin_classifying_multiple_mosaics(mosaics=None, filename="test", write_dat = True, 
-                                      pausetime = 3, ):
+def Twin_classifying_multiple_mosaics(mosaics=None, filename="test", new_csv = True):
     """
-    This function goes through the mosaics indicated and identifies twins within them,
-    and takes the user's classification as well. 
+    This function goes through the mosaics indicated and identifies twins within them. 
     
         It creates a csv with all the information about the twins. 
-        This function also asks if any twin pairing were missed in the mosaics.
+        
         
     Key Parameters:
         
@@ -2514,19 +2512,9 @@ def Twin_classifying_multiple_mosaics(mosaics=None, filename="test", write_dat =
         filename (string):
             The name of the csv file that is produced. 
         
-        write_dat (bool):
-            whether to write the .dat files for the twins or pairs found. Default: True
-            
-    Other Parameters:
-        
-        pausetime (int):
-            The amount of time the user initially has to manipulate the plot of the 
-            mosaic in both polarised intensity and Stokes I. 
-    
-    Returns:
-        
-        all_missing_twins (list):
-            A list containing the mosaic, and the number of twins missing in the mosaic. 
+        new_csv (bool):
+            Whether to create a new csv file (in this case the value should be True)
+            or append to an existing one (value should be False). Default: True 
 
 
 """
@@ -2572,11 +2560,11 @@ def Twin_classifying_multiple_mosaics(mosaics=None, filename="test", write_dat =
     # Creating a list to store all the mosaics information
     all_mosaics_dataset =[]
     
-    newfile = input("Is it this the start of a new csv file? \n"\
-                        +"(enter 1 for yes and 0 for no): ")
-    # newfile=1
+    # newfile = input("Is it this the start of a new csv file? \n"\
+    #                     +"(enter 1 for yes and 0 for no): ")
+    newfile= new_csv
         
-    if newfile==1 or newfile=="y" or newfile=="yes" or newfile=="1":
+    if newfile==1 or newfile=="y" or newfile=="yes" or newfile=="1" or newfile=True:
         newfile=True
         header=True
     else:
