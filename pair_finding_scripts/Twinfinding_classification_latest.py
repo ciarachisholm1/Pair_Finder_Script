@@ -25,11 +25,9 @@ from RM_StoN import RM_code_StoN
 from astropy.io import fits
 from astropy.wcs import WCS
 
-# import sys
-# sys.path.insert(1, """/Users/ciarachisholm/Library/CloudStorage/OneDrive-UniversityofCalgary/Ciara's Research Cubby/Codes""")
- 
+
 ##### Note to self: the pixel width in the CGPS is about 0.004988 degrees or 17.9568" (arcseconds)
-# plt.clf()
+
 
 
 
@@ -242,13 +240,13 @@ Other Parameters:
     from RM_StoN import RM_code_StoN
     import parameters_file as pf
     
-    # from parameters_file import max_dist_btw_sources as max_dist
+    
    
     
     
     
     
-    # beam_radius = 0.5#pixel-ish # the smallest beam size is 1.05 so half that is 0.5
+    
     # At some point this started loading as a string instead of a number (which 
     #   is weird since it's a number in parameters files) and this just solved that problem
     max_radius = float(pf.max_radius)
@@ -349,8 +347,6 @@ Other Parameters:
     twinlist_galcoord,twinsources_galcoord,twincentres_galcoord,solosources_galcoord, distlist_galcoord = [],[],[],[],[]
     
     
-    # t3 =time.time()
-    # print(f"L1521 third part: {t3-t2}")
     
 
     
@@ -533,10 +529,7 @@ Other Parameters:
         for i in range(len(twinlist)):
             print("Distance: ", distlist[i], " and pixel coordinates: ", twinlist[i], '\n' +
                  "and the coordinates in galactic coordinates are: ", twinlist_galcoord[i])
-    # print(f"The sources that should not have passed: {should_not_have_passed}")
-    # print(f"The sources that passed: {passed}")
-    # bad_sources = np.intersect1d(np.array(should_not_have_passed), np.array(passed))
-    # print(f"The sources that passed but should not have: {bad_sources}")
+    
         
     if Plot_twins:
         #### Getting Galactic Coordinate stuff/axis together. 
@@ -641,7 +634,7 @@ Other Parameters:
            #   same circle to two plots). The radius is multiplied by 5 so it's easier 
            #   to see the circle. 
            Color = 'lime'
-           # enlarge = 3
+           
            circleA1 = plt.Circle((twinAx, twinAy), pf.radius_scale*twinAr, color=Color, linewidth=2, fill=0)
            circleB1 = plt.Circle((twinBx, twinBy), pf.radius_scale*twinBr, color=Color, linewidth=2, fill=0)
            circleA2 = plt.Circle((twinAx, twinAy), pf.radius_scale*twinAr, color=Color, linewidth=2, fill=0)
@@ -662,13 +655,7 @@ Other Parameters:
     
     
     
-       # The legend code was based off the code from the webpage: https://matplotlib.org/stable/tutorials/intermediate/legend_guide.html 
-       # fig.legend(handles=legend_elements, loc="lower right", 
-       #              bbox_to_anchor=(0.822,0.825),bbox_transform=fig.transFigure, 
-       #              ncol=4, fontsize='large')
-       # fig.legend(handles=legend_elements, loc="center", 
-       #              bbox_to_anchor=(0.5,0.875),bbox_transform=fig.transFigure, 
-       #              ncol=4, fontsize='large')
+       
        
        if plot_AGNs:
            tickx_labels_AGN = np.round(wx[tck],3)
@@ -681,7 +668,7 @@ Other Parameters:
            bmin, bmax = ticky_labels_AGN[0], ticky_labels_AGN[-1]
            
            
-           # QSOs = np.round(get_AGNs_CatNorth(lmin, lmax, bmin, bmax, mosaic=Mo),3)
+           
            
            QSOs, dfchuck = fc.get_AGNs_CatNorth(lmin, lmax, bmin, bmax, mosaic=Mo)
            QSOs = np.round(QSOs, 3)
@@ -727,19 +714,13 @@ Other Parameters:
                                            label="DRAGN from VLA",
                                     markerfacecolor='magenta', markersize=15, alpha=0.6))
                 
-                # DRAGNs,dfchuck = fc.get_AGNs_VLA_DRAGNs(lmin, lmax, bmin, bmax)
-                 
-                # DRAGNs = np.round(DRAGNs,3)
-                 
-            
-           
+
            Gs,dfGs= fc.get_GLADE_Gs(lmin, lmax, bmin, bmax)
             
            Gs = np.round(Gs,3)
             
            if len(Gs) != 0:
-                # if len(GPQs)<=10:
-                    # print("GPQs: \n", repr(GPQs))
+                
                 for G in Gs:
                     
                      l, b= G
@@ -756,9 +737,7 @@ Other Parameters:
                                            label="Gs from GLADE",
                                     markerfacecolor='purple', markersize=15, alpha=0.6))
                 
-                # DRAGNs,dfchuck = fc.get_AGNs_VLA_DRAGNs(lmin, lmax, bmin, bmax)
-                 
-                # DRAGNs = np.round(DRAGNs,3)
+                
            
            # Getting the AGNs in the mosaics
            AGNs,dfchuck = fc.get_AGNs_simbad(lmin, lmax, bmin, bmax)
@@ -766,7 +745,7 @@ Other Parameters:
            
            # Adding the SIMBAD AGNs
            if len(AGNs)!= 0:
-               # print("AGNs: \n", repr(AGNs))
+               
                for AGN in AGNs:
                    l, b= AGN
                    
@@ -780,18 +759,10 @@ Other Parameters:
                legend_elements.insert(-1, Line2D([0], [0], color='darkgrey', lw=2, marker = 'o', markeredgewidth=5, linestyle='none',
                                           label="AGN from SIMBAD",
                                    markerfacecolor='darkgrey', markersize=15, alpha=0.6))
-           # print(len(AGNs))    
+            
            
           
-           # print("gotpast")
-       # if plot_individual_sources:
-       #     box_anchor= (0.922,0.825)
-       # else:
-       #     box_anchor=(0.80,0.825)
-       # # The legend code was based off the code from the webpage: https://matplotlib.org/stable/tutorials/intermediate/legend_guide.html 
-       # fig.legend(handles=legend_elements, loc="lower right", 
-       #              bbox_to_anchor=box_anchor,bbox_transform=fig.transFigure, 
-       #              ncol=4, fontsize='large')
+
        
        if plot_AGNs==False or len(AGNs)==0 and len(QSOs)==0 and len(DRAGNs)==0 :
            if plot_individual_sources:
@@ -882,7 +853,7 @@ Returns:
         
     #Getting the mosaic information for the coordinates from the header
     headerI = hdu_listI[0].header
-    # print(repr(headerI))
+    
     #   getting and removing unnecessary dimensions from the data
     imI = np.squeeze(hdu_listI[0].data)
 
@@ -1070,25 +1041,19 @@ def closest_TI_sources_to_PI_pair(s1PI, s2PI, TISources, left_side, bottom):
     dist_p2 = np.sqrt((dy_p2**2)+(dx_p2**2))
     
     
-    # print("dist_p1", dist_p1)
-    # print("dist_p2", dist_p2)
-    # in_cor_region_1 = dist_p1 <= max_offset_radius
-    # in_cor_region_2 = dist_p2 <= max_offset_radius
+   
     
     # Determining which source is closest to the pairs detected in total intensity
     TI1_index = np.argmin(dist_p1)
     TI2_index = np.argmin(dist_p2)
     
-    # print()
+    
     
     # Checking if the sources are in the correlation region. 
     TI1_in_offset = dx_p1[TI1_index] <=max_offset and dy_p1[TI1_index] <=max_offset
     TI2_in_offset = dy_p2[TI2_index] <=max_offset and dx_p2[TI2_index] <=max_offset
     
-    # print("TI1_in_offset: ", TI1_in_offset)
-    # print("TI2_in_offset: ", TI2_in_offset)
     
-    # print(TI1_index-TI2_index)
     
         # Could change the code to see test if it's in the offset first. 
     # Checking if there is one source that is closest to both PI twins
@@ -1277,11 +1242,7 @@ def solo_offset_test(s, center_x, center_y, return_offset=False):
     else:
         within_offset=False
         
-    # # Classifying the source based on the offset.
-    # if offset_x<=max_offset and offset_y<= max_offset:
-    #     within_offset=True
-    # else:
-    #     within_offset=False
+    
     
     if return_offset:
         return within_offset, offset_x, offset_y
@@ -1331,9 +1292,6 @@ def solo_source_central(s, cx,cy, PIs1, PIs2, left_side, bottom):
     dist_s1 = np.sqrt((s1y-sy)**2+(s1x-sx)**2)
     dist_s2 = np.sqrt((s2y-sy)**2+(s2x-sx)**2)
     
-    # print("dist_center: ", dist_central)
-    # print("dist_s1: ", dist_s1)
-    # print("dist_s2: ", dist_s2)
     
     if dist_central < dist_s1 and dist_central < dist_s2:
         return True
@@ -1385,8 +1343,6 @@ def TI_twin_detector_and_binary_pair_classifiers(TI_cutout_sources, c, twinPI, l
     
     # Getting the coordinates of the twins in PI
     s1PI, s2PI = twinPI
-    # print("s1PI: ", s1PI)
-    # print("s2PI: ", s2PI)
     s1PIy, s1PIx,s1PIr,s1PIp = s1PI
     s2PIy, s2PIx,s2PIr,s2PIp = s2PI
     
@@ -1401,9 +1357,8 @@ def TI_twin_detector_and_binary_pair_classifiers(TI_cutout_sources, c, twinPI, l
         # A list containing the twins found in total intensity.
     TI_twins =[]
         # a list to store the individual twin sources, this is to prevent double counting pairs
-    all_twin_sources = []# np.array([])
-        # Creating a list to store the pair classifications in
-    # pair_classifications=[]
+    all_twin_sources = []
+        
     
     # Creating a list to store solo sources found in TI
     solo_sources=[]
@@ -1463,7 +1418,7 @@ def TI_twin_detector_and_binary_pair_classifiers(TI_cutout_sources, c, twinPI, l
         
         # if 
         binary_classification = 2**1 # Flag for two sources detected
-        # Setting the num of sources in the correlation region to o initially. 
+        # Setting the num of sources in the correlation region to 0 initially. 
         num_of_correlated_solo_sources=0 
         num_of_central_solo_sources=0
         
@@ -1515,7 +1470,7 @@ def TI_twin_detector_and_binary_pair_classifiers(TI_cutout_sources, c, twinPI, l
                     
                 
             else: # if it's not in the offset region
-                # print("test 1425 nnum_of_correlated_solo_sources: ", num_of_correlated_solo_sources)
+                
                 for S in TI_cutout_sources.tolist():
                     # Checking if any of the sources is correlated to the center of PI pair. 
                     within_offset = solo_offset_test(S, center_x=center_x, center_y=center_y)
@@ -1529,9 +1484,7 @@ def TI_twin_detector_and_binary_pair_classifiers(TI_cutout_sources, c, twinPI, l
                          
                         num_of_correlated_solo_sources += 1
                         solo_sources.append(S)
-                    # else:
-                    #     discarded_sources.append(S)
-                    # print("test 1425 nnum_of_correlated_solo_sources: ", num_of_correlated_solo_sources)
+                    
                 # Classifying the sources 
                 if num_of_correlated_solo_sources==0:
                    binary_classification += 2**3 # Flag for no sources in cor. region
@@ -1550,10 +1503,10 @@ def TI_twin_detector_and_binary_pair_classifiers(TI_cutout_sources, c, twinPI, l
             
             num_sources_in_cor_regions =num_sources_in_correlation_regions(s1PI,
                                         s2PI, TI_cutout_sources, left_side, bottom)
-            # print("num_sources: ", num_sources_in_cor_regions)
+            
             TI1_index, TI2_index =closest_TI_sources_to_PI_pair(s1PI, s2PI, TI_cutout_sources,
                                                                 left_side, bottom)
-            # print("indices: ", TI1_index, " , ", TI2_index)
+            
             #TI2_index returns np.nan there is only one or no sources in the cor region
             both_cor = TI2_index != np.nan 
             
@@ -1594,7 +1547,7 @@ def TI_twin_detector_and_binary_pair_classifiers(TI_cutout_sources, c, twinPI, l
                     num_of_correlated_solo_sources += 1
                     print("Two sources correlated to the center but is not a twin, weird")
             
-            # binary_classification += 2**(3 +num_sources_in_cor_regions)
+            
             # If there are two sources in the cor region but neither is correlated to both/the center.
             #   I don't actually think this will happen but I wanted a way to keep track of it if I did.
             if num_of_correlated_solo_sources==0 and both_cor: 
@@ -1610,7 +1563,7 @@ def TI_twin_detector_and_binary_pair_classifiers(TI_cutout_sources, c, twinPI, l
        
     else: # if there were more than 2 sources detected:
         binary_classification = 2**2 # Flag for 3 or more sources detected.
-        # num_of_correlated_solo_sources = 0
+        
         
         
         # Getting the coordinates of the twin pair in PI
@@ -1618,7 +1571,7 @@ def TI_twin_detector_and_binary_pair_classifiers(TI_cutout_sources, c, twinPI, l
         # Getting the indices of the sources that are closest to the PI pair
         TI1_index, TI2_index =closest_TI_sources_to_PI_pair(s1PI, s2PI, TI_cutout_sources,
                                                             left_side, bottom)
-        # print(TI1_index, TI2_index)
+        
          
         # Calculating the number of sources in the cor. region of each twin
         num_sources_in_cor_regions =num_sources_in_correlation_regions(s1PI,
@@ -1676,16 +1629,7 @@ def TI_twin_detector_and_binary_pair_classifiers(TI_cutout_sources, c, twinPI, l
             else:
                 binary_classification += 2**3 # Flag for 0 sources in central cor region
             
-            # s = TI_cutout_sources[TI1_index]
-            # # Check if the source in total intensity if correlated with the center of the source.
-            # within_offset_solo = solo_offset_test(s, center_x=center_x, center_y=center_y)
             
-            # if within_offset_solo and proceed:
-            #     binary_classification += 2**4 # Flag for 1 source in central cor region
-            #     solo_sources.append(TI_cutout_sources[TI1_index].tolist())
-            #     central_sources.append(TI_cutout_sources[TI1_index].tolist())
-            # else:
-            #     binary_classification += 2**3 # Flag for 0 sources in central cor region
 
     
         elif num_sources_in_cor_regions ==0:
@@ -1745,8 +1689,7 @@ def TI_twin_detector_and_binary_pair_classifiers(TI_cutout_sources, c, twinPI, l
                 # Creating a list of sources without the two closest sources in it 
                 other_sources= np.delete(np.delete(TI_cutout_sources, n2, axis=0), n1, axis=0) 
                 
-                # print("TI_cutout_source: \n",TI_cutout_sources)
-                # print("other_sources: ", other_sources)
+                
                 # Getting the other sources in the cor region.
                 TI3_index, TI4_index =closest_TI_sources_to_PI_pair(s1PI, s2PI, other_sources,
                                                                     left_side, bottom)
@@ -1755,7 +1698,7 @@ def TI_twin_detector_and_binary_pair_classifiers(TI_cutout_sources, c, twinPI, l
                 sibling_sources.append(TI_cutout_sources[TI3_index].tolist())
                 # Checking if there is another to add to the siblings list.
                 
-                # print("L1664 debugging TI_twin_detector_and_binary_pair_classifiers \n TI4_index: ", TI4_index)
+                
                 if ~np.isnan(TI4_index):
                     sibling_sources.append(TI_cutout_sources[TI4_index].tolist())
             
@@ -1924,7 +1867,7 @@ Returns:
     
     import parameters_file as pf 
     
-    ######### Parameters #########
+    
    
     
     
@@ -1956,12 +1899,12 @@ Returns:
     # Creating an array to store all the cutout images
     
     
-    # I want to change what this is returning 
+    
     if len(twin_list)==0:
-        # print("There were no twins detected in polarised intensity in mosaic " +mosaic.upper())
+        
         return None
     
-    # snapshots=np.array([])
+   
 
     # Getting the total intensity image of the mosaic
     TI_mosaic= fc.T_Inten(mosaic, plot=0)
@@ -2035,8 +1978,6 @@ Returns:
         PI_snapshot = PI_mosaic[bottom:top, left_side:right_side]
         
         # Creating an array of pixel values to use in the snapshot plot
-        # ticks_cutout_x= [n for n in range(0, len(snapshot[0])+1, pf.num_btw_ticks_snapshots)]
-        # ticks_cutout_y= [n for n in range(0, len(snapshot[:,0])+1, pf.num_btw_ticks_snapshots)]
         ticks_cutout_x= [n for n in range(0, len(snapshot[0]),1)]
         ticks_cutout_y= [n for n in range(0, len(snapshot[:,0]), 1)]
         
@@ -2060,11 +2001,11 @@ Returns:
         if plot_AGNs:
             AGN_cutout_xlabels,AGN_cutout_ylabels  = np.round(all_xlabels[reduced_x_ticks],3),\
                                                         np.round(all_ylabels[reduced_y_ticks],3)
-            # print(AGN_cutout_ylabels)
+            
             lmin,lmax = AGN_cutout_xlabels[-1],AGN_cutout_xlabels[0]
             bmin, bmax = AGN_cutout_ylabels[0], AGN_cutout_ylabels[-1]
             
-            # print(bmin, bmax)
+           
 
         # Getting the galactic coordinates of the PI intensity twin coordinates.
         t1PI_y_GalCoord, t1PI_x_GalCoord, t1PI_r_GalCoord = all_ylabels[int(t1PI_y)],\
@@ -2101,10 +2042,6 @@ Returns:
             ax0.set_yticks(ticks_cutout_y, labels=cutout_ylabels)
             ax0.xaxis.set_major_locator(plt.MaxNLocator("auto"))
             ax0.yaxis.set_major_locator(plt.MaxNLocator("auto"))
-            # ax0.set_xticklabels(cutout_xlabels)
-            # ax0.set_yticklabels(cutout_ylabels)
-            # ax0.set_xlim(np.min(ticks_cutout_x), np.max(ticks_cutout_x))
-            # ax0.set_ylim(np.min(ticks_cutout_y), np.max(ticks_cutout_y))
       
             ax0.set_xlabel(r"Longitude $(^\circ)$")
             ax0.set_ylabel (r"Latitude $(^\circ)$")
@@ -2124,9 +2061,6 @@ Returns:
             ax1.xaxis.set_major_locator(plt.MaxNLocator("auto"))
             ax1.yaxis.set_major_locator(plt.MaxNLocator("auto"))
             # ax1.set_xticklabels(cutout_xlabels)
-            # ax1.set_yticklabels(cutout_ylabels)
-            # ax1.set_xlim(np.min(ticks_cutout_x), np.max(ticks_cutout_x))
-            # ax1.set_ylim(np.min(ticks_cutout_y), np.max(ticks_cutout_y))
       
             ax1.set_xlabel(r"Longitude $(^\circ)$")
             ax1.set_ylabel (r"Latitude $(^\circ)$")
@@ -2159,31 +2093,11 @@ Returns:
                 
                 
                 
-                # Gsarray, dfGs = fc.get_GLADE_Gs(lmin, lmax, bmin, bmax)
-                # Gs= np.round(Gsarray,3)
                 
-                
-                # for G in Gs:
-                        
-                #      l, b= G
-                     
-                #      x,y  = np.nanargmin(np.abs(AGN_cutout_xlabels-l)),np.nanargmin(np.abs(AGN_cutout_ylabels-b))
-                     
-                #      # cir = 0
-                #      cir1 = plt.Circle((x,y), radius = 3,  color= "purple", linewidth = 2, fill=1, alpha=0.6)
-                #      cir2 = plt.Circle((x,y), radius = 3,  color= "purple", linewidth = 2, fill=2, alpha=0.6)
-                #      ax0.add_patch(cir1)
-                #      ax1.add_patch(cir2)
-                #      G_source=True
-                #     # legend_elements.insert(-1, Line2D([0], [0], color='gold', lw=2, marker = 'o', markeredgewidth=5, linestyle='none',
-                #     #                            label="Quasar from Gaia",
-                #     #                     markerfacecolor='w', markersize=15, alpha=0.6))
                 DRAGNsarray, dfDRAGNs = fc.get_AGNs_VLA_DRAGNs(lmin, lmax, bmin, bmax)
                 DRAGNs = np.round(DRAGNsarray, 3)
                
-                # if len(DRAGNs) != 0:
-                #      # if len(GPQs)<=10:
-                #      #     print("GPQs: \n", repr(GPQs))
+               
                 for D in DRAGNs:
                     
                      l, b= D
@@ -2206,9 +2120,7 @@ Returns:
                 
                 
 
-                # Adding the SIMBAD AGNs
-                # if len(AGNs)!= 0:
-                    # print("AGNs: \n", repr(AGNs))
+                
                     
                 for AGN in AGNs:
                     l, b= AGN
@@ -2236,7 +2148,7 @@ Returns:
                     ax1.add_patch(cir2)
                     LrG_source=True
                 
-                # all_coords = np.concatenate( (QSOs, DRAGNs, AGNs))
+               
                 
                 
                 
@@ -2246,53 +2158,16 @@ Returns:
                 if QSO_source+AGN_source+DRAGN_source+G_source +LrG_source==0:#means no sources associated from catalogue
                     associated_AGN = False
                     offset_AGN=name_AGN=name_AGN= AGN_long=AGN_lat= survey_AGN=None
+                
                 else: 
-                    # print("L2187 database dfQSOs: ", repr(dfQSOs))
-                    # print("L2187 database dfDRAGNs: ", repr(dfDRAGNs))
-                    # print("dfAGNs: ", repr(dfAGNs))
-                    # print("columns DRAGNs: ", dfDRAGNs.columns)
-                    # print("coord QSOs: ", QSOsarray)
-                    # print("coord DRAGNs: ", DRAGNsarray)
-                    # print("coord AGNs: ", AGNsarray)
-                    
-                    
-                    
-
-                    
-                    all_databases= pd.concat([dfQSOs, dfDRAGNs, dfAGNs, dfLrGs])
+                   all_databases= pd.concat([dfQSOs, dfDRAGNs, dfAGNs, dfLrGs])
          
 
 
-                    # raise SystemExit(0)
-                    # # checking if there is an associated source in 
-                    # all_names = dfQSOs["Name"].tolist() + dfDRAGNs["Name"].tolist() +dfAGNs["Name"].tolist()
-                    # all_surveys = dfQSOs["database"].tolist() + dfDRAGNs["database"].tolist() +dfAGNs["database"].tolist()
-                    # all_l = all_b = []
-                    # coords = [QSOsarray, DRAGNsarray, AGNsarray]
-                    # for coor in coords:
-                    #     if len(coor)==0:
-                    #         continue
-                    #     else:
-                    #         ls, bs = coor[:,0].tolist(), coor[:, 1].tolist()
-                    #         all_l += ls
-                    #         all_b += bs
-                    # # all_l = QSOslst[:,0].tolist() + DRAGNslst[:,0].tolist()+ AGNslst[:,0].tolist()
-                    # # all_b = QSOslst[:,1].tolist() + DRAGNslst[:,1].tolist()+ AGNslst[:,1].tolist()
-                    
-                    # print(f" L2193 shape_of_columns) Name {len(all_names)} \n l: {len(all_l)}, \n b: {len(all_b)} \n surveys:  {len(all_surveys)}")
-                    # # exit(0)
-                    # all_info_df = pd.DataFrame({"Name":all_names, "l":all_l, "b":all_b, "survey":all_surveys})
-                    # # all_info = np.transpose(np.array([all_names,all_l, all_b, all_surveys ]))
-                    # # print("all info shape: ", all_info.shape)
-                    # # all_info_df = pd.DataFrame(all_info, columns=["Name", "l", "b","survey"])
-                    associated_AGN, offset_AGN, name_AGN, AGN_long, AGN_lat, survey_AGN, AGN_index = fc.AGN_associated(all_databases,center_long, center_lat,  distance_arcmin)
-                    print("Associated with AGN: ",name_AGN," from ", survey_AGN, "survey" )
                     
                 
                 
         # Identifying all the sources in the cutout
-        # TI_cutout_sources = fc.Identify_Point_Sources(snapshot, vmin=pf.TI_VMIN,
-        #                                               vmax=pf.TI_VMAX, threshold=pf.threshold*6, plot=False, )
         TI_cutout_sources = fc.Identify_Point_Sources(snapshot, vmin=pf.TI_VMIN,
                                                       vmax=pf.TI_VMAX, threshold=3*min_PI_peak/4, plot=False, )
         
@@ -2300,8 +2175,7 @@ Returns:
         # Getting just the radii of the sources, 
         TI_radii = np.copy(TI_cutout_sources[:,2])
         
-        # print("window dimensions", "\ny: ", pf.snapshot_length,"\nx: ", pf.snapshot_length)
-        # print("snapshot dimenstions: ", len(snapshot))
+       
         # Creating a list to store the sources that radii are within the max and min radii
         reduce_TI_cutout_sources=[]
         for N, r in enumerate(TI_radii):
@@ -2331,7 +2205,7 @@ Returns:
             = TI_twin_detector_and_binary_pair_classifiers(np.array(reduce_TI_cutout_sources),\
                                                            c, left_side=left_side, bottom=bottom, twinPI=twin_list[n],)
                 
-        # pair_classification = binary_classification
+        
         
      
         
@@ -2575,9 +2449,11 @@ Returns:
             # Creating the Circles for PI 2D plot
             circle1= plt.Circle((t1x,t1y), pf.radius_scale*t1r, color="lime", fill=False, linewidth=2)
             circle2= plt.Circle((t2x,t2y), pf.radius_scale*t2r, color="lime", fill=False, linewidth=2)
+         
             # Creating the Circles for Stokes I 2D plot
             circle3= plt.Circle((t1x,t1y), pf.radius_scale*t1r, color="lime", fill=False, linewidth=2, linestyle=":")
             circle4= plt.Circle((t2x,t2y), pf.radius_scale*t2r, color="lime", fill=False, linewidth=2, linestyle=":")
+         
             # # Creating the circles for the offset/correlation region in 
             # Offset_region1 = plt.Circle((t1x,t1y), pf.max_offset, color="silver", fill=False, linewidth=2, linestyle="--")
             # Offset_region2 = plt.Circle((t2x,t2y), pf.max_offset, color="silver", fill=False, linewidth=2, linestyle="--")
@@ -2588,15 +2464,11 @@ Returns:
             ax0.add_patch(circle3)
             ax0.add_patch(circle4)
             
-            # ax0.add_patch(Offset_region1)
-            # ax0.add_patch(Offset_region2)
+            
     
             central_classes= [17, 9, 18,146,20]
            
             if binary_classification in central_classes:
-                # print("Test")
-                # Offset_center = plt.Rectangle((y_center_TI -pf.max_offset, x_center_TI-pf.max_offset), pf.max_offset*2, pf.max_offset*2,color="silver", fill=False, linewidth=2, linestyle="--")
-                # ax0.add_patch(Offset_center)
                 offset_center = plt.Circle((x_center_TI,y_center_TI), pf.max_offset, color="silver", fill=False, linewidth=2, linestyle="--")
                 ax0.add_patch(offset_center)
             else:
@@ -2652,10 +2524,8 @@ Returns:
                     
                     
                 # Adding the cylinders from the sources detected in PI
-                # for t in twin_list:
-                # twin1, twin2 = t
+               
                 (t1y_i,t1x_i,t1r, t1p), (t2y_i, t2x_i, t2r, t2p) = twin1PI, twin2PI
-                # t2y_i, t2x_i, t2r = twin2
                 
                 t1y, t2y, t1x,t2x = round(t1y_i) - bottom, round(t2y_i) - bottom,\
                     round(t1x_i) -left_side, round(t2x_i) -left_side
@@ -2673,7 +2543,7 @@ Returns:
                 X2 = (R2 + r * np.cos(phi)) * np.cos(theta) +t2x
                 Y2 = (R2 + r * np.cos(phi)) * np.sin(theta)+t2y
                 Z2 = PI_snapshot.max() * np.sin(phi)*0.55 +PI_snapshot.max()/2 -PI_snapshot.max()/100
-                # Z = np.linspace(-0.01, snapshot.max(), snapshot.max()+0.01)
+               
                 
                 ax3.plot_surface(X1, Y1, Z1, color = 'lime', alpha=1)
                 ax3.plot_surface(X2, Y2, Z2, color = 'lime', alpha=1)
@@ -2687,10 +2557,6 @@ Returns:
             ax2.set_yticks(ticks_cutout_y, labels=cutout_ylabels)
             ax2.xaxis.set_major_locator(plt.MaxNLocator("auto"))
             ax2.yaxis.set_major_locator(plt.MaxNLocator("auto"))
-            # ax2.set_xticklabels(cutout_xlabels)
-            # ax2.set_yticklabels(cutout_ylabels)
-            # ax2.set_xlim(np.min(ticks_cutout_x), np.max(ticks_cutout_x))
-            # ax2.set_ylim(np.min(ticks_cutout_y), np.max(ticks_cutout_y))
             
             # Changing the pane color to be darker. 
             ax2.xaxis.set_pane_color((0.5,0.5,0.5,1))
@@ -2702,8 +2568,6 @@ Returns:
             ax2.set_zlabel("Total Intensity")
             
             ax2.set_zlim(0,snapshot.max()+0.01)
-            # ax2.set_xlim(0,len(snapshot[:,0])+1)
-            # ax2.set_ylim(0,len(snapshot[0,:])+1)
             cbar=fig.colorbar(plot3d, shrink=0.4, pad=0.15)#, pad=0.3)
             ticksforcolorbar = np.linspace(pf.TI_VMIN,pf.TI_VMAX, 6)
             cbar.set_ticks(ticksforcolorbar.tolist())
@@ -2714,10 +2578,6 @@ Returns:
             ax3.set_yticks(ticks_cutout_y, labels=cutout_ylabels)
             ax3.xaxis.set_major_locator(plt.MaxNLocator("auto"))
             ax3.yaxis.set_major_locator(plt.MaxNLocator("auto"))
-            # ax3.set_xticklabels(cutout_xlabels)
-            # ax3.set_yticklabels(cutout_ylabels)
-            # ax3.set_xlim(np.min(ticks_cutout_x), np.max(ticks_cutout_x))
-            # ax3.set_ylim(np.min(ticks_cutout_y), np.max(ticks_cutout_y))
             
             # Changing the pane color to be darker. 
             ax3.xaxis.set_pane_color((0.5,0.5,0.5,1))
@@ -2729,8 +2589,6 @@ Returns:
             ax3.set_zlabel("Polarised Intensity")
             
             ax3.set_zlim(0,PI_snapshot.max()+0.001)
-            # ax3.set_xlim(0,len(PI_snapshot[:,0])+1)
-            # ax3.set_ylim(0,len(PI_snapshot[0,:])+1)
             cbar=fig.colorbar(plot3d_PI, shrink=0.4, pad=0.15)
             ticksforcolorbar = np.linspace(pf.PI_VMIN,pf.PI_VMAX, 6)
             cbar.set_ticks(ticksforcolorbar.tolist())
@@ -2770,7 +2628,6 @@ Returns:
                 except:
                     print("ERROR: Invalid entry, please enter a valid class:")
                     true_classification= input("Please enter the classification of the twin:")
-                    # Class = input("Please enter the classification of the twin:")
                     if true_classification == str(None):
                         true_classification = "None"
                     elif true_classification == str(False):
@@ -2828,7 +2685,6 @@ Returns:
                         true_classification= int(Class)
                 except:
                     print("ERROR: Invalid entry, please enter an interger number")
-                    # true_classification= float(input("Please enter the classification of the twin:"))
                     Class = input("Please enter the classification of the twin:")
                     if Class == str(None):
                         true_classification = None
@@ -2884,10 +2740,10 @@ Returns:
         
         twin_dataset.append(twin_data)
     print("mosaic_pair_classifications: ", mosaic_pair_classifications)
-    # print("pair_classificationS: ", pair_classificationS)
+    
     print("mosaic_true_classificaations: ", mosaic_true_classifications)
     
-    # print(len(twin_data))
+    
     if return_singular_list:
         return twin_dataset
     else:
@@ -2898,75 +2754,6 @@ Returns:
                     mosaic_distances_pix, mosaic_distances_arcmin, mosaic_associated_AGNs,
                     mosaic_sources_offset,mosaic_AGN_names, mosaic_AGN_long,mosaic_AGN_lat, mosaic_AGN_surveys  )
 
- # mosaic_centers_gal = center_gal.copy()
- # mosaic_distances_pix = [distance[n]]
- # mosaic_distances_arcmin = [distance_arcmin]
-# def twin_detected_based_on_class(Class):
-#     if Class == 546 or Class = 548 or Class = 580:
-#         return True
-#     else:
-#         return False 
-
-
-
-
-
-
-
-# # # # # # # Mosaics I've gone through me2, mb2,my2,mey2
-# Mo="meu1"
-
-
-# tl, dl, tc = Potential_Twin_Finder(Mo, plot_individual_sources=True, Plot_twins=True)#,
-# #                                     # overlap_LoG=0.9)
-
-
-# # short_tc = tc[5:]
-
-# # short_tl = tl[5:]
-
-# # # # # # # M_TI_twins, M_Solo_Ss, M_pair_class,M_true_class, Detected_sources,all_twin_Ss = \
-# # # # # # #     twin_total_intensity_detector_and_classifier(Mo, short_tc, num_between=16, 
-# # # # # # #                                                   plot_snapshots=True, twin_list=short_tl)
-    
-# Twin_Dataset = twin_total_intensity_detector_and_classifier(mosaic = Mo,
-#                                                             centers = tc,
-#                                                             twin_list=tl, 
-#                                                             distance= dl,   
-#                                                             plot_snapshots=True,  
-#                                                             return_singular_list=True)
-# print()
-# columns = ["Mosaic", "Twin detected", "True twin detection",
-#             "Class", "True Class", "Polarized Intensity peak of twin 1 (Jy/beam)", "Polarized Intensity peak of twin 2 (Jy/beam)",
-#             "Total Intensity peak of twin 1 (Jy/beam)", "Total Intensity peak of twin 2 (Jy/beam)",
-            
-#             "y coordinate of twin 1 in PI (pixel units)","x coordinate of twin 1 in PI (pixel units)","HWHM of twin 1 in PI (pixel units)",
-#             "y coordinate of twin 2 in PI (pixel units)","x coordinate of twin 2 in PI (pixel units)","HWHM of twin 2 in PI (pixel units)",
-            
-#            "Galactic Latitude of twin 1 in PI (degrees)", "Galactic Longitude of i in PI twin 1 (degrees)",
-#            "HWHM of twin 1 in PI (arcseconds)", "Galactic Latitude of twin 2 in PI (degrees)", 
-#            "Galactic Longitude of twin 2  in PI (degrees)","HWHM of twin 2  in PI (arcseconds)",
-           
-#            "y coordinate of twin 1 in Stokes I (pixel units)","x coordinate of twin 1 in Stokes I (pixel units)","HWHM of twin 1 in Stokes I (pixel units)",
-#            "y coordinate of twin 2 in Stokes I (pixel units)","x coordinate of twin 2 in Stokes I (pixel units)","HWHM of twin 2 in Stokes I (pixel units)",
-           
-#            "Galactic Latitude of twin 1 in Stokes I (degrees)", "Galactic Longitude of i in Stokes I twin 1 (degrees)",
-#            "HWHM of twin 1 in Stokes I (arcseconds)", "Galactic Latitude of twin 2 in Stokes I (degrees)", 
-#            "Galactic Longitude of twin 2 in Stokes I (degrees)","HWHM of twin 2 in Stokes I (arcseconds)",]
-
-# df = pd.DataFrame(data=Twin_Dataset, columns=columns)
-# df.head(4)
-
-# def try_path(mosaic):
-#     from astropy.io import fits
-#     import parameters_file as pf
-    
-#     try: 
-#         hdu_listI = fits.open(pf.img_dir  +mosaic+"_1420_MHz_I_image.fits")
-    
-#     except:
-#         mosaic = input("Invalid mosaic name entered, please enter a valid one: ")
-#     return mosaic
 
 
 
@@ -3008,7 +2795,7 @@ def write_dat_file(mosaic, mosaic_dataset,):
 # =============================================================================
 #     Getting values from dataset
 # =============================================================================
-    # print("should have made the dir")
+    
     
     # Determining if the detected sources were twins 
     Twin_Detected = mosaic_array[:,2]#.tolist() # true twin detected column
@@ -3073,22 +2860,7 @@ def write_dat_file(mosaic, mosaic_dataset,):
                                       f'{t2_PI[p]:10.2f}'
                                       f'{t2_TI[p]:11.2f}'
                                       f'{t2_SN[p]:7.2f}')
-                    # write_twins.write(f'\n{fc.string_normalise(str(round(t1_gal_long[p], 3)), 10)}'
-                    #                   f'{fc.string_normalise(str(round(t1_gal_lat[p], 3)), 9, negatives=True)}'
-                    #                   f'{fc.string_normalise(str(fc.nround(t1_xpix[p])), 6)}'
-                    #                   f'{fc.string_normalise(str(fc.nround(t1_ypix[p])), 9)}'
-                    #                   f'{fc.string_normalise(str(round(t1_PI[p], 2)), 9)}'
-                    #                   f'{fc.string_normalise(str(round(t1_TI[p], 2)), 8)}'
-                    #                   f'{fc.string_normalise(str(round(t1_SN[p], 2)), 5)}')
                     
-                    # Writing twin 2's info
-                    # write_twins.write(f'\n{fc.string_normalise(str(round(t2_gal_long[p], 3)), 10)}'
-                    #                   f'{fc.string_normalise(str(round(t2_gal_lat[p], 3)), 9, negatives=True)}'
-                    #                   f'{fc.string_normalise(str(fc.nround(t2_xpix[p])), 6)}'
-                    #                   f'{fc.string_normalise(str(fc.nround(t2_ypix[p])), 9)}'
-                    #                   f'{fc.string_normalise(str(round(t2_PI[p], 2)), 9)}'
-                    #                   f'{fc.string_normalise(str(round(t2_TI[p], 2)), 8)}'
-                    #                   f'{fc.string_normalise(str(round(t2_SN[p], 2)), 5)}')
                 else:
                     # Writing twin 2's info first (since it has the higher PI peak)
                     write_twins.write(f'\n{t2_gal_long[p]:7.3f}'
@@ -3105,22 +2877,7 @@ def write_dat_file(mosaic, mosaic_dataset,):
                                       f'{t1_PI[p]:10.2f}'
                                       f'{t1_TI[p]:11.2f}'
                                       f'{t1_SN[p]:7.2f}')
-                    # write_twins.write(f'\n{fc.string_normalise(str(round(t2_gal_long[p], 3)), 10)}'
-                    #                   f'{fc.string_normalise(str(round(t2_gal_lat[p], 3)), 9, negatives=True)}'
-                    #                   f'{fc.string_normalise(str(fc.nround(t2_xpix[p])), 6)}'
-                    #                   f'{fc.string_normalise(str(fc.nround(t2_ypix[p])), 9)}'
-                    #                   f'{fc.string_normalise(str(round(t2_PI[p], 2)), 9)}'
-                    #                   f'{fc.string_normalise(str(round(t2_TI[p], 2)), 8)}'
-                    #                   f'{fc.string_normalise(str(round(t2_SN[p], 2)), 5)}')
                     
-                    # # Writing twin 1's info
-                    # write_twins.write(f'\n{fc.string_normalise(str(round(t1_gal_long[p], 3)), 10)}'
-                    #                   f'{fc.string_normalise(str(round(t1_gal_lat[p], 3)), 9, negatives=True)}'
-                    #                   f'{fc.string_normalise(str(fc.nround(t1_xpix[p])), 6)}'
-                    #                   f'{fc.string_normalise(str(fc.nround(t1_ypix[p])), 9)}'
-                    #                   f'{fc.string_normalise(str(round(t1_PI[p], 2)), 9)}'
-                    #                   f'{fc.string_normalise(str(round(t1_TI[p], 2)), 8)}'
-                    #                   f'{fc.string_normalise(str(round(t1_SN[p], 2)), 5)}')
     print(f'\nTwins sourcelist generated for mosaic {mosaic.upper()}!')
 
 
@@ -3173,11 +2930,7 @@ Other Parameters:
     from pathlib import Path
     from directories import RM_out_dir, csv_dir, img_dir, backup_csv_dir
     plt.style.use('default')
-    # beam_radius = 1.5
-    # # Setting the PI threshold
-    # PI_threshold = (1.5/1000)/2 # The threshold for source detection in Jo-Anne's
-    #   thesis was 1.5 mJy/beam, and threshold in scale space is half the peak 
-    #   in the PI image.
+    
     
     # Checking to make sure the directory exists.
     if os.path.isdir(csv_dir) == False:
@@ -3191,8 +2944,8 @@ Other Parameters:
     Path = csv_dir + filename+".csv"
     print("CSV path: ", Path)
     path_for_missing_twins = csv_dir +filename+"_missing_twins.csv"
+                                       
     # writting backup paths
-    
     main_csv_backup_path = backup_csv_dir+ filename+".csv"
     missing_twins_backup_path =backup_csv_dir + filename+"_missing_twins.csv"
     
@@ -3248,7 +3001,7 @@ Other Parameters:
             with open(p, mode="a", newline='') as file:
                 file.write("\n")
       
-    # print(header)
+   
     
     
    
@@ -3277,10 +3030,11 @@ Other Parameters:
 
         for mosaic in mosaics:
             
-            # if mosaic == "mel1":continue #skipping this mosaic it has far too much extended emission and no twins cna be identified in it
+           
             mosaic = fc.try_path(mosaic, directory=img_dir)
             
             print("\nMosaic: ", mosaic.upper(), "\n")
+         
             # Detecting the twins in polarized intensity and getting there coordinates,
             #   distance between them, the center point between them and the same thing but in galactic coordinates. 
             twin_list, distance_list, twin_centers, twinlist_galcoord, distlist_galcoord, twincentres_galcoord \
@@ -3337,16 +3091,12 @@ Other Parameters:
             df.to_csv(missing_twins_backup_path, mode=mode_missing_twins, header = header_missing_twins, index = False)
             
             mode_missing_twins, header_missing_twins="a", False
-            # df = pd.DataFrame([], columns = ["Mosaic", "Number of Twins"])
-            # df.to_csv(path_for_missing_twins, mode="w", index = False)
+            
             
             
             
             if mosaic_dataset != None:
-                
-                # twins_detected = np.sum(np.array(mosaic_dataset)[:,2]) # Finding the sum of detections.
-                
-                
+
                 if newfile:
                     Mode="w"
                 else:
@@ -3367,9 +3117,7 @@ Other Parameters:
                 
                 header=False
                 newfile=False
-            
-                
-                # write_dat = False
+
                 if write_dat and np.sum(twins_detected) != 0:
                     
 # =============================================================================
@@ -3378,7 +3126,7 @@ Other Parameters:
 # =============================================================================
                     write_dat_file(mosaic, mosaic_dataset,)
             
-            # print("should have closed")
+            
             plt.close("all")
             
                        
@@ -3396,19 +3144,12 @@ Other Parameters:
             else:
                 mosaics=[str(new_mosaics)]
     
-    
-    # # Converting the data from a list to a dataframe 
-    # DataFrame = pd.DataFrame(data=all_mosaics_dataset, columns = labels)
-    
-    
-    # #Writing the csv file 
-    # DataFrame.to_csv(path_or_buf=Path, mode=Mode, header=header, index=header)
+   
     
     
     return all_missing_twins
 
-# # No twins in mew2, mh2, mk2
-# mo = "mo1"
+
 list_all_mosaics = ['meq1', 'meq2', 'mer1', 'mer2', 'mes1', 'mes2', 'met1', 'met2',
                     'meu1', 'meu2', 'mev1', 'mev2', 'mew1', 'mew2', 'mex1', 'mex2',
                     'mey1', 'mey2', 'mez1', 'mez2', 'mst1', 'mst2', 'mu1', 'mu2',
@@ -3419,7 +3160,7 @@ list_all_mosaics = ['meq1', 'meq2', 'mer1', 'mer2', 'mes1', 'mes2', 'met1', 'met
                     'mij2', 'mk1', 'mk2', 'mm1','mm2', 'mn1', 'mn2', 'mo1', 'mo2', 'mp1', 
                     'mp2', 'mq1', 'mq2','mr1', 'mr2', 'mej1', 'mej2', 'mek1', 
                     'mek2', 'mel1', 'mel2',"md1", "md2", "ml2", "ml1"]
-list_mosaics_w_twins = ['meq1', 'meq2', 'mer1', 'mer2', 'mes1', 'mes2', 'met1', 'met2',
+list_mosaics_with_twins = ['meq1', 'meq2', 'mer1', 'mer2', 'mes1', 'mes2', 'met1', 'met2',
                     'meu1', 'meu2', 'mev1', 'mev2', 'mew1', 'mew2', 'mex1', 'mex2',
                     'mey1', 'mey2', 'mez1', 'mez2', 'mst1', 'mst2', 'mu1', 'mu2',
                     'mv1', 'mv2', 'mw1', 'mw2', 'mx1', 'mx2', 'my1', 'my2', 'ma1',
@@ -3430,40 +3171,15 @@ list_mosaics_w_twins = ['meq1', 'meq2', 'mer1', 'mer2', 'mes1', 'mes2', 'met1', 
                     'mp2', 'mq1', 'mq2','mr1', 'mr2', 'mej1', 'mej2', 'mek1', 
                     'mek2', 'mel1', 'mel2',]
 
-mosaics_to_go_through = ['meq1', 'meq2', 'mer1', 'mer2', 'mes1', 'mes2', 'met1', 'met2',
-                    'meu1', 'meu2', 'mev1', 'mev2', 'mew1', 'mew2', 'mex1', 'mex2',
-                    'mey1', 'mey2', 'mez1', 'mez2', 'mst1', 'mst2', 'mu1', 'mu2',
-                    'mv1', 'mv2', 'mw1', 'mw2', 'mx1', 'mx2', 'my1', 'my2', 'ma1',
-                    'ma2', 'mb1', 'mb2', 'mc1', 'mc2', 'me1', 'me2','me3', 'me4', 
-                    'me5', 'mf1', 'mf2', 'mf3', 'mf4', 'mf5',"mg0",'mg1', 'mg2', 'mg3',
-                    'mg4', 'mg5', 'mh1', 'mh2', 'mh3', 'mh4', 'mh5', 'mij1', 
-                    'mij2', 'mk1', 'mk2', 'mm1','mm2', 'mn1', 'mn2', 'mo1', 'mo2', 'mp1', 
-                    'mp2', 'mq1', 'mq2','mr1', 'mr2', 'mej1', 'mej2', 'mek1', 
-                    'mek2', 'mel1', 'mel2',]
-
-missed_mosaics =["md1", "md2", "ml2", "ml1"]
-# tl, dl, tc = Potential_Twin_Finder("mv1", Plot_twins=True)#, plot_individual_sources=True, threshold_for_source=0.002)
-
-# # MOs = "mer1,mer2,met1,met2,mey1,mw2,mb2,mb1,mf4,mf1,mg4,mij2,mm2,mm1,mej1,mej2,mel2,mel1"
-# # # MOs = "mm1,mej1,mej2,mel2,mel1"
-# MOs_2 = "mer1,met1,mw2,mb2,mb1,mf4,mf1,mg4,mij2,mm2,mm1,mej1,mel1,mr1,mo1"
-# rdm_mosaic = "mf2,mh3,mb2,mu1" 
-# test_rm_mosaics="mf4,mr1,mw2"
-# test_rm_mosaics="mw2"
 
 
-# mosaics_to_go_through =  [ 'mo1', 'mo2', 'mp1', 
-#                     'mp2', 'mq1', 'mq2','mr1', 'mr2', 'mej1', 'mej2', 'mek1', 
-#                     'mek2', 'mel1', 'mel2',]
 
 mosaics_to_go_through = [ "mer1", "md1"]
 
 
-# 
-# missing = Twin_classifying_multiple_mosaics(mosaics=missed_mosaics, filename="w_StoN_condition",write_dat=True)
-missing = Twin_classifying_multiple_mosaics(mosaics=mosaics_to_go_through, filename="trash", write_dat=False)
-# missing = Twin_classifying_multiple_mosaics(mosaics="mex2", filename="Test")
-# missing = Twin_classifying_multiple_mosaics(mosaics="mv1", filename="chuck")
+
+missing = Twin_classifying_multiple_mosaics(mosaics=mosaics_to_go_through, filename="test", write_dat=False)
+
 
 
 
@@ -3479,7 +3195,6 @@ def write_dat_from_csv(csv_dir=None):
     mosaics = all_twins_df["Mosaic"].unique()
     
     for m in mosaics:
-        # if m =="mg4":
         mosaic_df = all_twins_df[all_twins_df["Mosaic"]==m]
         
         
@@ -3487,4 +3202,4 @@ def write_dat_from_csv(csv_dir=None):
        
         write_dat_file(m, mosaic_df_list)
             
-# write_dat_from_csv()
+
