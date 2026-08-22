@@ -111,8 +111,7 @@ def PIimg(mosaic="ma1", plot=True, return_StoN=False, gal_coord=True, click_coor
         
         obsfreq.append(hdu_listQ[0].header["OBSFREQ"]/1000000)
         
-        # if band=="D":
-        #     print(repr(hdu_listQ[0].header ))
+        
         # removing unnecessary dimensions from the data
         imQ = np.squeeze(image_dataQ)
         imU = np.squeeze(image_dataU)
@@ -130,15 +129,14 @@ def PIimg(mosaic="ma1", plot=True, return_StoN=False, gal_coord=True, click_coor
         #Adding the polarised intensity of the band to the list
         PIs.append(np.sqrt(imQ**2+imU**2))
     
-    # print(hdu_listQ[0].header["OBSFREQ"]/1000000)
-    # print(obsfreq)
+    
     #Converting to arrays
     PIs = np.array(PIs)
     
     sigma_squared = np.array(sigma_squared)
     sigmas = np.array(sigmas)
     
-    # print(np.shape(PIs))
+   
     #Calculating noise bias and variability 
     noisebias= np.sqrt(2)*np.sum(sigmas, axis=0)/4 # adding all the 
     noisevar = np.sqrt(sigma_squared[0]**1 +sigma_squared[1]**1+sigma_squared[2]**1+sigma_squared[3]**1)/4 
@@ -154,8 +152,7 @@ def PIimg(mosaic="ma1", plot=True, return_StoN=False, gal_coord=True, click_coor
     
     #getting the decliation of the moasic (degrees)
     dec = headerI[64]
-    # print(mosaic, " dec: ", dec)
-    # breakpoint()
+    
     
     if create_fits:
         if new_img_dir == None:
@@ -177,11 +174,7 @@ def PIimg(mosaic="ma1", plot=True, return_StoN=False, gal_coord=True, click_coor
         #Plotting the image
     
         fig, ax = plt.subplots(1,1,dpi = pf.DPI, figsize=(8,8))
-        # fig = plt.figure(dpi=pf.DPI, figsize=(8,8))
-        # ax = plt.subplot(projection = wcs_helix)
-
-        # plt.figure(dpi = pf.DPI, figsize=(8,8))
-        # ax.set_title("The Polarised Intensity of "+mosaic.upper(), fontsize=30)
+        
         ax.set_title(mosaic.upper()+": Polarised Intensity", fontsize=30)
 
         if click_coord:
@@ -194,8 +187,7 @@ def PIimg(mosaic="ma1", plot=True, return_StoN=False, gal_coord=True, click_coor
         #making an array with the number of pixels in the image
         ticksx = np.linspace(0, len(PI_cor[0]), len(PI_cor[0]))
         ticksy = np.linspace(0, len(PI_cor[:,0]), len(PI_cor[0]))
-        # Setting the number of ticks to be displayed on the plot
-        # tck = [n for n in range(0,1024,pf.PI_num_of_pixels_btw_ticks)]
+        
         
         tck = [n for n in range(0,len(PI_cor[0]),1)]
         if gal_coord:
@@ -224,7 +216,7 @@ def PIimg(mosaic="ma1", plot=True, return_StoN=False, gal_coord=True, click_coor
         else:
             plt.xticks(tck)
             plt.yticks(tck)
-        # print(pf.PI_VMAX)
+        
         PLT = ax.imshow(PI_cor, vmin=pf.PI_VMIN, vmax=pf.PI_VMAX*vmax_scale,cmap="gist_heat",origin='lower',)
         
         from mpl_toolkits.axes_grid1 import make_axes_locatable
@@ -235,16 +227,15 @@ def PIimg(mosaic="ma1", plot=True, return_StoN=False, gal_coord=True, click_coor
         cbar.set_label(label="Polarised Intensity (mJy/beam)", size=20)
         ticksforcbar = np.linspace( pf.PI_VMIN, pf.PI_VMAX*vmax_scale ,7)
         cbar.set_ticks(ticksforcbar.tolist())
-        # cbar.ax.tick_params(labelsize=12)
+        
         labels_for_colorbar = np.round(np.copy(ticksforcbar)*1000,1)
         cbar.ax.set_yticklabels(labels_for_colorbar.tolist())
 
         
-        # ax.ticker.MaxNLoactor(nbins="auto")
+        
         ax.xaxis.set_major_locator(plt.MaxNLocator("auto"))
         ax.yaxis.set_major_locator(plt.MaxNLocator("auto"))
-        # overlay = ax.get_coords_overlay('icrs')
-        # overlay.grid(color='white', ls='dotted')
+        
         
         
         plt.draw()
@@ -257,17 +248,7 @@ def PIimg(mosaic="ma1", plot=True, return_StoN=False, gal_coord=True, click_coor
         return PI_cor,  SignToNoise
 
 
-# Pi = PIimg("Mx1")
 
-
-
-# pi,StoN = PIimg("Mx1", return_StoN=True, plot=True, gal_coord=False)
-# print("StoN: ", StoN[935, 795])
-# plt.figure()
-# plt.imshow(StoN, origin="lower")
-# # pi = PIimg("mg1")
-# print("Max: ", np.nanmax(pi))
-# print("ran")
 
 def get_galactic_coor(mosaic="ma1"):
     """This function returns the axis labels for a mosaic in the CGPS.
@@ -355,31 +336,7 @@ def maskblack(image,  sigma=3, black=None):
         return image
 
 
-# Pi = PIimg("mu1",True)
 
-# # mosaic_edge_cut_out(PI_image, Mo,  plot=False,)
-# PIcut, mask = mosaic_edge_cut_out(Pi, "ma1")
-
-# mask = im1 <0.0023
-
-
-# im1[mask] = 0
-
-# PI, StN = PIimg("met2",return_StoN=True, plot=1, gal_coord=False)
-
-# print("lobe 1: PI", PI[433, 848])
-# print("lobe 1: StN", StN[433, 848])
-# TI = T_Inten("met2", plot=0)
-# print("lobe 1: SI", TI[433, 848])
-
-# print("\nlobe 2: PI", PI[449, 861])
-# print("lobe 2: StN", StN[449, 861])
-# TI = T_Inten("met2", plot=0)
-# print("lobe 2: SI", TI[449, 861])
-
-
-
-# im2=np.copy(im1)
 
 def T_Inten(mosaic="ma1", plot=1, click_coord=False, T=None):
     """Display the total instensity of a mosaic from the CGPS. It assumes that matplotlib and 
@@ -408,24 +365,11 @@ def T_Inten(mosaic="ma1", plot=1, click_coord=False, T=None):
     #Getting the mosaic information for the coordinates 
     headerI = hdu_listI[0].header
        
-    # print(headerI)
-    # print(repr(headerI))
+    
     # getting and removing unnecessary dimensions from the data
     TI_image = np.squeeze(hdu_listI[0].data)
     
-    # have_problem = TI_image<0
-    # no_problem = have_problem==False
     
-    # should_be_zero = TI_image <1*10**(-7)
-    # overlay = np.ones(shape=(TI_image.shape))
-    # overlay[no_problem]=np.nan
-    # TI_image[should_be_zero] =0
-    # TI_image[have_problem] = np.nan
-    # if np.sum(have_problem) ==0:
-    #     print("it's fine")
-    # else:
-    #     print("Husten we have a problem")
-    #     print("have_proboem: ", have_problem)
     
     
     # Adding the galactic coordinates to the image, the coordinates will 
@@ -446,8 +390,7 @@ def T_Inten(mosaic="ma1", plot=1, click_coord=False, T=None):
     ticky_labels = np.round(wy[tck],2)
     
     
-    # plt.imshow(overlay, vmin=0,vmax=1, alpha=1, cmap="cool_r", origin="lower")
-    # plt.show()
+    
 
     if plot:    
         
@@ -455,29 +398,18 @@ def T_Inten(mosaic="ma1", plot=1, click_coord=False, T=None):
         fig, axs = plt.subplots(1,1, dpi = pf.DPI, figsize=(8,8))
 
         
-        # if click_coord:
-        #     def mouse_event(event):
-        #         print('x: {} and y: {} in pixel coordinates'.format(np.round(event.xdata,2), np.round(event.ydata)))
-            
-        #     cid = fig.canvas.mpl_connect('button_press_event', mouse_event)
         
         if T==None:
             T = mosaic.upper()+ ": Stokes I"
         
         plt.title(T, fontsize=30)
-        # axs.set_title("Stokes I of a Fraternal \n Double Source", fontsize=30)
-        # plt.title("The total intensity of the identical double source")
-        axs.set_xticks(tck, tickx_labels)
+       
         axs.set_yticks(tck, ticky_labels)
         
         axs.set_xlabel(r"Longitude $(\degree)$", fontsize=25)
         axs.set_ylabel (r"Latitude $(\degree)$", fontsize=25)
         
-        # axs.imshow(overlay, vmin=0,vmax=1, alpha=1, cmap="cool_r", origin="lower")
-        # CMAP = plt.cm.gist_heat
-        # CMAP.set_bad('lime',1.)
-        # PLT = axs.imshow(TI_image, vmin=pf.TI_VMIN, vmax=pf.TI_VMAX, cmap=CMAP,origin='lower')
-        # PLT = axs.imshow(TI_image, vmin=pf.TI_VMIN, vmax=pf.TI_VMAX*vmax_scale, cmap="gist_heat",origin='lower')
+        
         PLT = axs.imshow(TI_image*1000, vmin=pf.TI_VMIN, vmax=pf.TI_VMAX*vmax_scale*1000, cmap="gist_heat",origin='lower')
 
         # axs.imshow(overlay, vmin=0,vmax=1, alpha=1, cmap="cool_r", origin="lower")
@@ -489,12 +421,7 @@ def T_Inten(mosaic="ma1", plot=1, click_coord=False, T=None):
         cax = divider.append_axes("right", size="5%", pad=0.3)
         
         cbar = fig.colorbar(PLT,cax=cax)
-        # ticksforcbar = np.linspace( pf.TI_VMIN, pf.TI_VMAX*1 ,7)
-        # cbar.set_ticks(ticksforcbar.tolist())
-        # print("line 373 test: ", pf.TI_MIN-1)
-
-        # labels_for_colorbar = np.round(np.copy(ticksforcbar)*1000,1)
-        # cbar.ax.set_yticklabels(labels_for_colorbar.tolist())
+       
         cbar.set_label(label="Stokes I (mJy/beam)", size=20)
         plt.tight_layout()
         
@@ -506,12 +433,9 @@ def T_Inten(mosaic="ma1", plot=1, click_coord=False, T=None):
   
     
     
-    return TI_image#, copyimI
+    return TI_image
 
-Mo= "ma1"
-Pi = PIimg(Mo,True, )
-Si = T_Inten(Mo)
-# print("SI max: ", np.nanmax(si))
+
 
 
 
@@ -545,12 +469,11 @@ def Identify_Point_Sources(Image, plot=True, vmin = 0, vmax = 0.003, threshold=1
     """
     from skimage.feature import blob_log
     import parameters_file as pf
-    # Finding all the sources
     
+    # Finding all the sources
     pointsources = blob_log(Image, max_sigma=pf.max_sigma, min_sigma=pf.min_sigma, 
                             threshold=threshold, overlap=pf.overlap_LoG, num_sigma=int(pf.num_sigmas))
-    # PScircles = pointsources[:,2]*np.sqrt(2)
-
+   
     
     # Creating a new list with all the radii being the HWHM of the orginal source
     #   in the produced image
@@ -575,34 +498,6 @@ def Identify_Point_Sources(Image, plot=True, vmin = 0, vmax = 0.003, threshold=1
         plt.show()
     
     return PScircles
-
-# Mo="ma1"
-# PIim1 = PIimg(mosaic ="mg5",   plot=0, gal_coord=True)
-# Pi = PIimg(plot=0)
-
-
-# ## Seyfret Gal stuff
-# Y,X,R = Ss[:,0].astype(int), Ss[:,1].astype(int), Ss[:,2].astype(int)
-
-# Xnot_too_small= X >= 390
-# Xnot_too_big = X<= 405
-# Ynot_too_small = Y>= 770
-# Ynot_too_big = Y<= 810
-
-# in_right_place = Xnot_too_big*Xnot_too_small*Ynot_too_big*Ynot_too_small
-# indices = np.nonzero(in_right_place)[0]
-# for i in indices:
-#     print("Coordinates of the source and HWHM: ", Ss[i])
-
-# ## KR 144 (in MX1)
-# Ss = Identify_Point_Sources(PIim1[708:722,696:712], plot=True)
-# print(Ss*20)
-# # dx = np.abs(Ss[0,0]-Ss[1,0])
-# dy = np.abs(Ss[0,1]-Ss[1,1])
-# print("distance is: ", np.sqrt(dx**2+dy**2))
-
-# SI = T_Inten("mk1")
-
 
 
 
@@ -689,22 +584,18 @@ def cm_generator(y_true, y_pred, labels, filename=None, title="", ymap=None, fig
     cm.index.name = 'Actual'
     cm.columns.name = 'Predicted'
     fig, ax = plt.subplots(figsize=figsize)
-    # fig, ax = plt.subplots(1,1, fig_kw={"figsize":figsize})
+    
     hm= heatmap(cm, vmin=0.0, vmax=VMAX+0.00001, annot=annot, cmap=my_CM_cmap, fmt='', ax=ax,
                       annot_kws={'size': fontsize_annot})
-    # hm= heatmap(cm, vmin=0.0, vmax=VMAX+0.00001, annot=annot, cmap="rocket", fmt='', ax=ax,
-    #                   annot_kws={'size': fontsize_annot})
-    # hm.set_xticklabels(fontsize=fontsize_annot)
-    # hm.set_yticklabels(fontsize=fontsize_annot)
+    
     if rotatex:
         hm.set_xticklabels(hm.get_xticklabels(), rotation = 30, ha="right")
-    # hm.fontsize(1)
-    # plt.imshow(cm, annot=annot, )
+    
     plt.title(title, fontsize=fontsize_title)
     plt.tight_layout()
     
     
-    # plt.tight_layout()
+    
     if filename != None:
         plt.savefig(filename)
         if svg_dir != None:
@@ -729,19 +620,13 @@ def get_AGNs_simbad(lmin, lmax, bmin, bmax, csv_dir = None):
         AGNs (2D array): array containing the coordinates in the area. each row is a source, and column 1 is the long, column 2 is the lat."""
     
     
-    # if mosaic.lower() =="mg0":
-    #     region = "SLE"
-    # elif int(mosaic[2])>2:
-    #     region = "NLE"
-    # else:
-    #     region = "CGPS"
-    
+   
     
     
     if csv_dir == None:
         csv_dir = "/Users/ciarachisholm/Library/CloudStorage/OneDrive-UniversityofCalgary/Ciara's Research Cubby/Data Verification/SIMBAD_type_sep/all_regions_simbad.csv"
 
-        # csv_dir = "/Users/ciarachisholm/Library/CloudStorage/OneDrive-UniversityofCalgary/Ciara's Research Cubby/Data Verification/MySimbadCSVs/combined_AGNs_condensed.csv"
+       
     
     ndf = pd.read_csv(csv_dir)
     ndf["Index"] = np.array(ndf.index.values)
@@ -765,11 +650,7 @@ def get_AGNs_simbad(lmin, lmax, bmin, bmax, csv_dir = None):
     
     
     return AGNs, dfAGNs
-# QSOs, dfQSOs = get_AGNs_simbad(150, 155.31, 0.43, 5.48)
 
-
-# # dfQSOs.rename(columns={"Gaia":"Name"}, inplace=True)
-# print(QSOs)
 def get_AGNs_CatNorth(lmin, lmax, bmin, bmax, mosaic):
     """This function reads in the AGNs from simbad and returns the long and lat in area specificed area. 
         Function requires numpy and pandas to run.
@@ -794,10 +675,10 @@ def get_AGNs_CatNorth(lmin, lmax, bmin, bmax, mosaic):
         region = "CGPS"
     
     
-    # if csv_dir == None:
+   
     folder_dir = "/Users/ciarachisholm/Library/CloudStorage/OneDrive-UniversityofCalgary/Ciara's Research Cubby/Data Verification/CatNorth/"
 
-        # csv_dir = "/Users/ciarachisholm/Library/CloudStorage/OneDrive-UniversityofCalgary/Ciara's Research Cubby/Data Verification/MySimbadCSVs/combined_AGNs_condensed.csv"
+
     filename = region+"_CatNorth.csv"
     ndf = pd.read_csv(folder_dir + filename)
     ndf["Index"] = np.array(ndf.index.values)
@@ -819,15 +700,10 @@ def get_AGNs_CatNorth(lmin, lmax, bmin, bmax, mosaic):
     dfQSOs= dfQSOs.rename(columns={"Gaia":"Name"})
     dfQSOs["database"] = "Gaia"
     
-    # QSOs = np.column_stack((longs_in_region, lats_in_region))
-    # QSOs = np.transpose(np.array([longs_in_region, lats_in_region]))
+    
     
     return QSOs, dfQSOs
-# QSOs, dfQSOs = get_AGNs_CatNorth(150, 155.31, 0.43, 5.48, "mst2")
 
-
-# # dfQSOs.rename(columns={"Gaia":"Name"}, inplace=True)
-# print(QSOs)
 
 
 def get_AGNs_VLA_DRAGNs(lmin, lmax, bmin, bmax, csv_dir = None):
@@ -845,20 +721,13 @@ def get_AGNs_VLA_DRAGNs(lmin, lmax, bmin, bmax, csv_dir = None):
         AGNs (2D array): array containing the coordinates in the area. each row is a source, and column 1 is the long, column 2 is the lat."""
     
     
-    # if mosaic.lower() =="mg0":
-    #     region = "SLE"
-    # elif int(mosaic[2])>2:
-    #     region = "NLE"
-    # else:
-    #     region = "CGPS"
-    
+   
     
     
     if csv_dir == None:
         csv_dir = "/Users/ciarachisholm/Library/CloudStorage/OneDrive-UniversityofCalgary/Ciara's Research Cubby/Data Verification/VLA_DRAGNs/VLA_DRAGNs_in_CGPS.csv"
 
-        # csv_dir = "/Users/ciarachisholm/Library/CloudStorage/OneDrive-UniversityofCalgary/Ciara's Research Cubby/Data Verification/MySimbadCSVs/combined_AGNs_condensed.csv"
-    
+        
     ndf = pd.read_csv(csv_dir)
     
     ndf["Index"] = np.array(ndf.index.values)
@@ -898,7 +767,7 @@ def get_GLADE_Gs(lmin, lmax, bmin, bmax, csv_dir = None):
     if csv_dir == None:
         csv_dir = "/Users/ciarachisholm/Library/CloudStorage/OneDrive-UniversityofCalgary/Ciara's Research Cubby/Data Verification/GLADE/GLADE_in_CGPS.csv"
 
-        # csv_dir = "/Users/ciarachisholm/Library/CloudStorage/OneDrive-UniversityofCalgary/Ciara's Research Cubby/Data Verification/MySimbadCSVs/combined_AGNs_condensed.csv"
+        
     
     ndf = pd.read_csv(csv_dir, index_col="n")
     
@@ -940,10 +809,10 @@ def get_MORX(lmin, lmax, bmin, bmax, csv_dir = None):
     
     
     if csv_dir == None:
-        # csv_dir = "/Users/ciarachisholm/Library/CloudStorage/OneDrive-UniversityofCalgary/Ciara's Research Cubby/Data Verification/MORX/MORX_reduced_col_in_CGPS_offset_larger_than_0.75arcmin.csv"
+        
         csv_dir = "/Users/ciarachisholm/Library/CloudStorage/OneDrive-UniversityofCalgary/Ciara's Research Cubby/Data Verification/MORX/MORX_reduced_col_in_CGPS.csv"
 
-        # csv_dir = "/Users/ciarachisholm/Library/CloudStorage/OneDrive-UniversityofCalgary/Ciara's Research Cubby/Data Verification/MySimbadCSVs/combined_AGNs_condensed.csv"
+        
     
     ndf = pd.read_csv(csv_dir, index_col="n")
     
@@ -959,7 +828,7 @@ def get_MORX(lmin, lmax, bmin, bmax, csv_dir = None):
     Gs = np.transpose(np.array([longs_in_region, lats_in_region]))
     shortdf = ndf[srcs_in_area]
     dfGs = shortdf[["Name", "l", "b","Index"]].copy()
-    # dfGs = dfGs.rename(columns={"Primary Catalogue Number":"Name"})
+    
     dfGs["database"] = "MORX"
     
     
@@ -984,10 +853,10 @@ def get_TayCat(lmin, lmax, bmin, bmax, csv_dir = None):
     
     
     if csv_dir == None:
-        # csv_dir = "/Users/ciarachisholm/Library/CloudStorage/OneDrive-UniversityofCalgary/Ciara's Research Cubby/Data Verification/MORX/MORX_reduced_col_in_CGPS_offset_larger_than_0.75arcmin.csv"
+        
         csv_dir = "/Users/ciarachisholm/Library/CloudStorage/OneDrive-UniversityofCalgary/Ciara's Research Cubby/Data Verification/Taylor2017/Tay_cat.csv"
 
-        # csv_dir = "/Users/ciarachisholm/Library/CloudStorage/OneDrive-UniversityofCalgary/Ciara's Research Cubby/Data Verification/MySimbadCSVs/combined_AGNs_condensed.csv"
+        
     
     ndf = pd.read_csv(csv_dir)
     
@@ -1024,19 +893,13 @@ def get_AGNs_VLA_large_rG(lmin, lmax, bmin, bmax, csv_dir = None):
         AGNs (2D array): array containing the coordinates in the area. each row is a source, and column 1 is the long, column 2 is the lat."""
     
     
-    # if mosaic.lower() =="mg0":
-    #     region = "SLE"
-    # elif int(mosaic[2])>2:
-    #     region = "NLE"
-    # else:
-    #     region = "CGPS"
-    
+   
     
     
     if csv_dir == None:
         csv_dir = "/Users/ciarachisholm/Library/CloudStorage/OneDrive-UniversityofCalgary/Ciara's Research Cubby/Data Verification/VLA_large_rG/VLA_large_rG_in_CGPS.csv"
 
-        # csv_dir = "/Users/ciarachisholm/Library/CloudStorage/OneDrive-UniversityofCalgary/Ciara\'s\ Research\ Cubby/Data\ Verification/VLA_large_rG/VLA_large_rG_in_CGPS.csv"
+        
     
     ndf = pd.read_csv(csv_dir)
     
@@ -1058,11 +921,7 @@ def get_AGNs_VLA_large_rG(lmin, lmax, bmin, bmax, csv_dir = None):
     
     
     return large_rG, dflarge_rG
-# QSOs, dfQSOs = get_AGNs_VLA_DRAGNs(150, 155.31, 0.43, 5.48)
 
-
-# # dfQSOs.rename(columns={"Gaia":"Name"}, inplace=True)
-# print(dfQSOs.columns)
 def AGN_associated(df, center_long, center_lat, distance_arcmin):
     """This function takes in a dataset of AGNs and whether there is a 
     source associated with the twin pair. It is associated if there is a
@@ -1100,14 +959,14 @@ def AGN_associated(df, center_long, center_lat, distance_arcmin):
         name, closeAGN_long, closeAGN_lat, survey = None, None, None, None
     
     
-    # AGN_long, AGN_lat = AGNs[:,0], AGNs[:,1]
+   
     AGN_long, AGN_lat = df["l"].to_numpy(), df["b"].to_numpy()
     
     
     long_offset, lat_offset = AGN_long- center_long, AGN_lat - center_lat
     distance_btw_center_and_AGN = np.sqrt(long_offset**2+lat_offset**2)*60# factor of 60 to convert into arcmins instead of degrees
    
-    # print("l881) min distance", distance_btw_center_and_AGN)
+   
     
     if np.sum(distance_btw_center_and_AGN<=distance_arcmin/2+(1/6))==0: # the 1/6 allows for the radius to go out to the edge of 
         #  last pixel in case the AGN is like a couple arcseconds outside of the range
@@ -1125,14 +984,11 @@ def AGN_associated(df, center_long, center_lat, distance_arcmin):
         Index = df["Index"].tolist()[n]
         
         closeAGN_long, closeAGN_lat = AGN_long[n], AGN_lat[n]
-        # if VLA:
-        #     closeAGN_long, closeAGN_lat = df["l_lobe"].tolist()[n], df["b_lobe"].tolist()[n]
-        # else:
-        #     closeAGN_long, closeAGN_lat = df["l"].tolist()[n], df["b"].tolist()[n]
+        
 
     return associated, offset, name, closeAGN_long, closeAGN_lat, survey, Index
 
-# print(AGN_associated(pd.DataFrame([], columns = ["Name", "l", "b", "database"]), 122, 1, 2))
+
 
 
 def pixel_to_arcseconds(iterable):
@@ -1269,842 +1125,13 @@ def mosaic_edge_cut_out(PI_image, Mo,  plot=False,):
     return below_threshold
 
 
-# the following has most artifacts masked out, more than is stated in the thesis. 
-# def cut_out_for_mosaic(PIim1,Mo,  overlap=True):
-#     """ This function produces a mask cutouts for mosaics that will remove any previously
-#     identified artifacts, and removes the overlap region if set to. Anywhere that is masked
-#     will have a NaN value. 
-    
-#     Parameters:
-#         PIim1 (2D array): The polarised intensity image produced for the given array.
-        
-#         Mo (String): The mosaic of the polarised intensity image.
-        
-#         overlap (boo): Whether to give an overlap mask or not (Default to true)
-        
-#     Returns: 
-#     if overlap is True: 
-        
-#         PIcutout (2D array): The polarised intensity image with the cuts to the 
-#                              map.
-                             
-#         Overlapcutout (2D array): An array of values that are True if the corresponding
-#                                   pixel if was masked out due to overlap. 
-        
-#         maskforoverlap: Returns a mask for the overlap region where everyvalue 
-#                         in the array is zero (if the area is masked) or a NaN. 
-        
-#         maskforplot(2D array): Returns a mask for the edges region where everyvalue 
-#                         in the array is 1 (if the area is masked) or a NaN.
-#     if overlap is False: 
-#         PIcutout (2D array): The polarised intensity image with the cuts to the 
-#                              map.
-                             
-#         maskforplot(2D array): Returns a mask for the edges region where everyvalue 
-#                         in the array is 1 (if the area is masked) or a NaN.
-#             """
-    
-#     import parameters_file as pf
-    
-    
-    
-#     # Creating an array to store where the orignal NaNs in the mosaic occured
-#     #   (so the places with no field observations can be set to white in the plot)
-#     OGNaNs = np.isnan(PIim1)
 
-#     # copying the orignal array
-#     PIcutout = np.copy(PIim1)
-    
-#     # Getting where the edges of the fields are, the edges in the fields have do
-#     #   not have the same sensitivity as the centers and the signal to noise ratio
-#     #   is lower in this regions. The weight of the fields is proportional to the 
-#     #   signal to noise for the field, and the edges do not have any overlapping 
-#     #   regions therefore they have the lowest weights. Any pixel below the given 
-#     #   weight will be set to True, where the rest are set to False. 
-#     below_threshold = mosaic_edge_cut_out(PI_image=PIim1, Mo=Mo, plot=False)
-#     PIcutout[below_threshold] = np.nan
-
-
-
-    
-#     # Checking if the Mosaic is MF1, there are sections of that mosaic that need to be removed
-#     # from the area we want to check. Specifically CAS A and another cut out region that needs
-#     # to be expanded due to leakage. 
-#     if Mo=="mf1":
-        
-        
-#         # Removing CAS A and it's noisy surrounding regions from the detecting image
-#         PIcutout[90:500, 0:200] = np.nan
-
-#         PIcutout[440:565, 360:490] = np.nan # SNR G109.0-1.0
-        
-#         if overlap:
-#             ### Overlapping regions in the mosaics
-            
-#             # Creating an array to show the overlap region in the mosaic. The true values 
-#             #   will be set to NaNs later in the code to show the mask overlap region
-#             overlapcutout = np.zeros(shape=PIim1.shape, dtype=bool)
-#             # Setting the overlap regions to be false so later they will show up when
-#             #   the mask is plotted. 
-#             overlapcutout[(-1*pf.mosaic_overlap_width):,:] = True
-#             overlapcutout[:,:pf.mosaic_overlap_width] = True
-#             overlapcutout[:,(-1*pf.mosaic_overlap_width):] = True
-            
-    
-#             # Cutting out the overlap regions from the polarized intensity image that 
-#             #   will be used to detect the point sources within it. 
-#             PIcutout[overlapcutout] = np.nan
-#     # Checking if the Mosaic is ME1, there are sections of that mosaic that need to be removed
-#     # from the area we want to check. Specifically CAS A and the bottom left corner is missing,
-#     # and the surrounding region has more noise than the rest of the mosaic. 
-#     elif Mo=='me1':
-        
-#         # Cutting out the sections with leakage, or have curved edges leading to false detections
-        
-#         PIcutout[:600, 400:] = np.nan
-#         PIcutout[850:, 720:790] = np.nan
-        
-#         if overlap:
-#             ### Overlapping regions in the mosaics
-            
-#             # Creating an array to show the overlap region in the mosaic. The true values 
-#             #   will be set to NaNs later in the code to show the mask overlap region
-#             overlapcutout = np.zeros(shape=PIim1.shape, dtype=bool)
-#             # Setting the overlap regions to be false so later they will show up when
-#             #   the mask is plotted. 
-#             overlapcutout[-1*pf.mosaic_overlap_width:,:] = True
-#             overlapcutout[:,0:pf.mosaic_overlap_width] = True
-#             overlapcutout[:,-1*pf.mosaic_overlap_width:] = True
-            
-    
-#             # Cutting out the overlap regions from the polarized intensity image that 
-#             #   will be used to detect the point sources within it. 
-#             PIcutout[overlapcutout] = np.nan
-#     elif Mo=='mn1':
-        
-#         # Cutting out the sections with leakage, HII regions, or have curved edges leading to false detections
-        
-#         PIcutout[800:840, 300:350] = np.nan
-#         PIcutout[645:705, 450:500] = np.nan
-#         PIcutout[720:810, 770:830] = np.nan
-        
-#         if overlap:
-#             ### Overlapping regions in the mosaics
-            
-#             # Creating an array to show the overlap region in the mosaic. The true values 
-#             #   will be set to NaNs later in the code to show the mask overlap region
-#             overlapcutout = np.zeros(shape=PIim1.shape, dtype=bool)
-#             # Setting the overlap regions to be false so later they will show up when
-#             #   the mask is plotted. 
-#             overlapcutout[-1*pf.mosaic_overlap_width:,:] = True
-#             overlapcutout[:,0:pf.mosaic_overlap_width] = True
-#             overlapcutout[:,-1*pf.mosaic_overlap_width:] = True
-            
-    
-#             # Cutting out the overlap regions from the polarized intensity image that 
-#             #   will be used to detect the point sources within it. 
-#             PIcutout[overlapcutout] = np.nan
-    
-#     # Checking if the Mosaic is MO2. One of the observations 
-#     elif Mo=="mo2":
-        
-#         # The odd source at the top cut out. 
-#         PIcutout[-350:, 300:850] = np.nan
-#         PIcutout[120:170, 850:900] = np.nan
-#         PIcutout[200:325, 150:300] = np.nan
-        
-#         if overlap:
-#             ### Overlapping regions in the mosaics
-            
-#             # Creating an array to show the overlap region in the mosaic. The true values 
-#             #   will be set to NaNs later in the code to show the mask overlap region
-#             overlapcutout = np.zeros(shape=PIim1.shape, dtype=bool)
-#             # Setting the overlap regions to be false so later they will show up when
-#             #   the mask is plotted. 
-#             overlapcutout[:pf.mosaic_overlap_width,:] = True
-#             overlapcutout[:,0:pf.mosaic_overlap_width] = True
-#             overlapcutout[:,-1*pf.mosaic_overlap_width:] = True
-            
-    
-#             # Cutting out the overlap regions from the polarized intensity image that 
-#             #   will be used to detect the point sources within it. 
-#             PIcutout[overlapcutout] = np.nan
-#     elif Mo=="mej2":
-        
-#         # The odd source at the top cut out. 
-#         PIcutout[508:518, 612:623] = np.nan
-        
-        
-#         if overlap:
-#             ### Overlapping regions in the mosaics
-            
-#             # Creating an array to show the overlap region in the mosaic. The true values 
-#             #   will be set to NaNs later in the code to show the mask overlap region
-#             overlapcutout = np.zeros(shape=PIim1.shape, dtype=bool)
-#             # Setting the overlap regions to be false so later they will show up when
-#             #   the mask is plotted. 
-#             overlapcutout[:pf.mosaic_overlap_width,:] = True
-#             overlapcutout[:,0:pf.mosaic_overlap_width] = True
-#             overlapcutout[:,-1*pf.mosaic_overlap_width:] = True
-            
-    
-#             # Cutting out the overlap regions from the polarized intensity image that 
-#             #   will be used to detect the point sources within it. 
-#             PIcutout[overlapcutout] = np.nan
-            
-#     # Checking if the mosaic is one on the edge of the mosaic. 
-#     elif Mo=='meq2' or Mo=='meq1' or Mo=='mel1' or Mo=='mel2':
-        
-        
-#         if overlap:
-#             # Creating an array to show the overlap region in the mosaic. The true values 
-#             #   will be set to NaNs later in the code to show the mask overlap region
-#             overlapcutout = np.zeros(shape=PIim1.shape, dtype=bool)
-            
-#             if Mo[-1]=="1":
-#                 overlapcutout[-1*pf.mosaic_overlap_width:,:] = True
-#             else:
-#                 overlapcutout[:pf.mosaic_overlap_width,:] = True 
-#             if Mo[2]=="q":
-#                 overlapcutout[:,-1*pf.mosaic_overlap_width:] = True
-#             else:
-#                 overlapcutout[:,0:pf.mosaic_overlap_width] = True
-#             ### Overlapping regions in the mosaics
-
-#             # Cutting out the overlap regions from the polarized intensity image that 
-#             #   will be used to detect the point sources within it. 
-#             PIcutout[overlapcutout] = np.nan
-
-#      # Checking if the mosaic is a side of the extension  into the halo of the CGPS 
-#     elif Mo=="me3" or Mo=="me4" or Mo=="me5" or Mo=="mh3" or Mo=='mh4' or Mo=='mh5':
-
-         
-         
-#          if overlap:
-#              # Creating an array to show the overlap region in the mosaic. The true values 
-#              #   will be set to NaNs later in the code to show the mask overlap region
-#              overlapcutout = np.zeros(shape=PIim1.shape, dtype=bool)
-             
-#              if Mo[-1]=="5":
-#                  print(Mo[2])
-#                  overlapcutout[:pf.mosaic_overlap_width,:] = True
-#              else:
-#                  overlapcutout[:pf.mosaic_overlap_width,:] = True 
-#                  overlapcutout[-1*pf.mosaic_overlap_width:,:] = True
-             
-#              if Mo[1]=="e":
-#                  overlapcutout[:,-1*pf.mosaic_overlap_width:] = True
-#              else:
-#                  overlapcutout[:,0:1*pf.mosaic_overlap_width] = True
-#              ### Overlapping regions in the mosaics
-    
-#              # Cutting out the overlap regions from the polarized intensity image that 
-#              #   will be used to detect the point sources within it. 
-#              PIcutout[overlapcutout] = np.nan
-#     elif Mo=="md2" or Mo=='mh2':
-        
-    
-#         if overlap:
-#             ### Overlapping regions in the mosaics
-            
-#             # Creating an array to show the overlap region in the mosaic. The true values 
-#             #   will be set to NaNs later in the code to show the mask overlap region
-#             overlapcutout = np.zeros(shape=PIim1.shape, dtype=bool)
-            
-#             # Setting the overlap regions that occur in both mosaics
-#             overlapcutout[:,-1*pf.mosaic_overlap_width:] = True
-#             overlapcutout[:,:1*pf.mosaic_overlap_width] = True
-#             overlapcutout[:1*pf.mosaic_overlap_width,:] = True
-            
-#             # Cutting out the overlap regions that only occur in each mosaic. 
-#             if Mo=="mh2":
-#                 overlapcutout[-112:,0:694] = True
-                
-#             else:
-#                 overlapcutout[-112:,-554:] = True
-                
-#             # Cutting out the overlap regions from the polarized intensity image that 
-#             #   will be used to detect the point sources within it. 
-#             PIcutout[overlapcutout] = np.nan
-#     elif Mo=="my2":
-#         # Cutting out the leakage from the source in the mosaic
-#         PIcutout[100:300, 200:450] = np.nan
-#         PIcutout[992:938, 608:623] = np.nan
-#         PIcutout[515:540, 895:915] = np.nan
-        
-        
-#         if overlap:
-#             ### Overlapping regions in the mosaics
-            
-#             # Creating an array to show the overlap region in the mosaic. The true values 
-#             #   will be set to NaNs later in the code to show the mask overlap region
-#             overlapcutout = np.zeros(shape=PIim1.shape, dtype=bool)
-            
-#             # Setting the overlap regions to be false so later they will show up when
-#             #   the mask is plotted. 
-#             overlapcutout[:1*pf.mosaic_overlap_width,:] = True
-#             overlapcutout[:,0:1*pf.mosaic_overlap_width] = True
-#             overlapcutout[:,-1*pf.mosaic_overlap_width:] = True
-            
-#             # Cutting out the overlap regions from the polarized intensity image that 
-#             #   will be used to detect the point sources within it. 
-#             PIcutout[overlapcutout] = np.nan
-#     elif Mo=="my1":
-#         # Cutting out the leakage from the source in the mosaic
-#         PIcutout[-150:-100, 250:400] = np.nan
-        
-        
-#         if overlap:
-#             ### Overlapping regions in the mosaics
-            
-#             # Creating an array to show the overlap region in the mosaic. The true values 
-#             #   will be set to NaNs later in the code to show the mask overlap region
-#             overlapcutout = np.zeros(shape=PIim1.shape, dtype=bool)
-            
-#             # Setting the overlap regions to be false so later they will show up when
-#             #   the mask is plotted. 
-#             overlapcutout[-1*pf.mosaic_overlap_width:,:] = True
-#             overlapcutout[:,:1*pf.mosaic_overlap_width] = True
-#             overlapcutout[:,-1*pf.mosaic_overlap_width:] = True
-            
-#             # Cutting out the overlap regions from the polarized intensity image that 
-#             #   will be used to detect the point sources within it. 
-#             PIcutout[overlapcutout] = np.nan
-
-#     elif Mo=="mk1":
-#         # Cutting out the leakage from the source in the mosaic
-#         PIcutout[475:800, 150:500] = np.nan
-        
-        
-#         if overlap:
-#             ### Overlapping regions in the mosaics
-            
-#             # Creating an array to show the overlap region in the mosaic. The true values 
-#             #   will be set to NaNs later in the code to show the mask overlap region
-#             overlapcutout = np.zeros(shape=PIim1.shape, dtype=bool)
-            
-#             # Setting the overlap regions to be false so later they will show up when
-#             #   the mask is plotted. 
-#             overlapcutout[-1*pf.mosaic_overlap_width:,:] = True
-#             overlapcutout[:,:1*pf.mosaic_overlap_width] = True
-#             overlapcutout[:,-1*pf.mosaic_overlap_width:] = True
-            
-#             # Cutting out the overlap regions from the polarized intensity image that 
-#             #   will be used to detect the point sources within it. 
-#             PIcutout[overlapcutout] = np.nan
-#     elif Mo=="mq2":
-#         # Cutting out the leakage from what I assume is a gas cloud
-#         PIcutout[450:550, 250:675] = np.nan
-#         PIcutout[250:450, 375:525]=np.nan
-#         PIcutout[250:300, 690:735]=np.nan
-#         PIcutout[195:270, 160:300]=np.nan
-        
-#         if overlap:
-#             ### Overlapping regions in the mosaics
-            
-#             # Creating an array to show the overlap region in the mosaic. The true values 
-#             #   will be set to NaNs later in the code to show the mask overlap region
-#             overlapcutout = np.zeros(shape=PIim1.shape, dtype=bool)
-            
-#             # Setting the overlap regions to be false so later they will show up when
-#             #   the mask is plotted. 
-#             overlapcutout[:1*pf.mosaic_overlap_width,:] = True
-#             overlapcutout[:,0:1*pf.mosaic_overlap_width] = True
-#             overlapcutout[:,-1*pf.mosaic_overlap_width:] = True
-            
-#             # Cutting out the overlap regions from the polarized intensity image that 
-#             #   will be used to detect the point sources within it. 
-#             PIcutout[overlapcutout] = np.nan
-            
-            
-#     elif Mo=="mer1":
-#         PIcutout[710:730,627:670] = np.nan
-#         PIcutout[550:600,325:400] = np.nan
-#         if overlap:
-#             ### Overlapping regions in the mosaics
-            
-#             # Creating an array to show the overlap region in the mosaic. The true values 
-#             #   will be set to NaNs later in the code to show the mask overlap region
-#             overlapcutout = np.zeros(shape=PIim1.shape, dtype=bool)
-            
-#             # Setting the overlap regions to be false so later they will show up when
-#             #   the mask is plotted. 
-#             overlapcutout[-1*pf.mosaic_overlap_width:,:] = True
-#             overlapcutout[:,:1*pf.mosaic_overlap_width] = True
-#             overlapcutout[:,-1*pf.mosaic_overlap_width:] = True
-            
-#             # Cutting out the overlap regions from the polarized intensity image that 
-#             #   will be used to detect the point sources within it. 
-#             PIcutout[overlapcutout] = np.nan
-#     elif Mo=="mer2":
-        
-#         PIcutout[400:595,360:540] = np.nan
-#         if overlap:
-#             ### Overlapping regions in the mosaics
-            
-#             # Creating an array to show the overlap region in the mosaic. The true values 
-#             #   will be set to NaNs later in the code to show the mask overlap region
-#             overlapcutout = np.zeros(shape=PIim1.shape, dtype=bool)
-            
-#             # Setting the overlap regions to be false so later they will show up when
-#             #   the mask is plotted. 
-#             overlapcutout[:1*pf.mosaic_overlap_width,:] = True
-#             overlapcutout[:,0:1*pf.mosaic_overlap_width] = True
-#             overlapcutout[:,-1*pf.mosaic_overlap_width:] = True
-            
-#             # Cutting out the overlap regions from the polarized intensity image that 
-#             #   will be used to detect the point sources within it. 
-#             PIcutout[overlapcutout] = np.nan
-            
-#     elif Mo=="mes2":
-        
-#         PIcutout[672:750,282:385] = np.nan
-#         if overlap:
-#             ### Overlapping regions in the mosaics
-            
-#             # Creating an array to show the overlap region in the mosaic. The true values 
-#             #   will be set to NaNs later in the code to show the mask overlap region
-#             overlapcutout = np.zeros(shape=PIim1.shape, dtype=bool)
-            
-#             # Setting the overlap regions to be false so later they will show up when
-#             #   the mask is plotted. 
-#             overlapcutout[:1*pf.mosaic_overlap_width,:] = True
-#             overlapcutout[:,0:1*pf.mosaic_overlap_width] = True
-#             overlapcutout[:,-1*pf.mosaic_overlap_width:] = True
-            
-#             # Cutting out the overlap regions from the polarized intensity image that 
-#             #   will be used to detect the point sources within it. 
-#             PIcutout[overlapcutout] = np.nan
-            
-#     elif Mo=="mez2":
-        
-#         PIcutout[920:950,775:805] = np.nan
-#         if overlap:
-#             ### Overlapping regions in the mosaics
-            
-#             # Creating an array to show the overlap region in the mosaic. The true values 
-#             #   will be set to NaNs later in the code to show the mask overlap region
-#             overlapcutout = np.zeros(shape=PIim1.shape, dtype=bool)
-            
-#             # Setting the overlap regions to be false so later they will show up when
-#             #   the mask is plotted. 
-#             overlapcutout[:1*pf.mosaic_overlap_width,:] = True
-#             overlapcutout[:,0:1*pf.mosaic_overlap_width] = True
-#             overlapcutout[:,-1*pf.mosaic_overlap_width:] = True
-            
-#             # Cutting out the overlap regions from the polarized intensity image that 
-#             #   will be used to detect the point sources within it. 
-#             PIcutout[overlapcutout] = np.nan
-            
-#     elif Mo=="mey1":
-#         PIcutout[684:753,561:612] = np.nan
-#         if overlap:
-#             ### Overlapping regions in the mosaics
-            
-#             # Creating an array to show the overlap region in the mosaic. The true values 
-#             #   will be set to NaNs later in the code to show the mask overlap region
-#             overlapcutout = np.zeros(shape=PIim1.shape, dtype=bool)
-            
-#             # Setting the overlap regions to be false so later they will show up when
-#             #   the mask is plotted. 
-#             overlapcutout[-1*pf.mosaic_overlap_width:,:] = True
-#             overlapcutout[:,:1*pf.mosaic_overlap_width] = True
-#             overlapcutout[:,-1*pf.mosaic_overlap_width:] = True
-            
-#             # Cutting out the overlap regions from the polarized intensity image that 
-#             #   will be used to detect the point sources within it. 
-#             PIcutout[overlapcutout] = np.nan
-#     elif Mo=="mv1":
-#         PIcutout[483:522,657:705] = np.nan
-#         PIcutout[210:270,390:440] = np.nan
-#         PIcutout[660:690,615:640] = np.nan
-#         if overlap:
-#             ### Overlapping regions in the mosaics
-            
-#             # Creating an array to show the overlap region in the mosaic. The true values 
-#             #   will be set to NaNs later in the code to show the mask overlap region
-#             overlapcutout = np.zeros(shape=PIim1.shape, dtype=bool)
-            
-#             # Setting the overlap regions to be false so later they will show up when
-#             #   the mask is plotted. 
-#             overlapcutout[-1*pf.mosaic_overlap_width:,:] = True
-#             overlapcutout[:,:1*pf.mosaic_overlap_width] = True
-#             overlapcutout[:,-1*pf.mosaic_overlap_width:] = True
-            
-#             # Cutting out the overlap regions from the polarized intensity image that 
-#             #   will be used to detect the point sources within it. 
-#             PIcutout[overlapcutout] = np.nan
-            
-#     elif Mo=="ml2":
-        
-#         PIcutout[153:195,132:180] = np.nan
-#         PIcutout[690:,264:732] = np.nan
-#         if overlap:
-#             ### Overlapping regions in the mosaics
-            
-#             # Creating an array to show the overlap region in the mosaic. The true values 
-#             #   will be set to NaNs later in the code to show the mask overlap region
-#             overlapcutout = np.zeros(shape=PIim1.shape, dtype=bool)
-            
-#             # Setting the overlap regions to be false so later they will show up when
-#             #   the mask is plotted. 
-#             overlapcutout[:1*pf.mosaic_overlap_width,:] = True
-#             overlapcutout[:,0:1*pf.mosaic_overlap_width] = True
-#             overlapcutout[:,-1*pf.mosaic_overlap_width:] = True
-            
-#             # Cutting out the overlap regions from the polarized intensity image that 
-#             #   will be used to detect the point sources within it. 
-#             PIcutout[overlapcutout] = np.nan
-#     elif Mo=="mn2":
-        
-#         PIcutout[900:,132:350] = np.nan
-#         PIcutout[150:200,770:830] = np.nan
-        
-#         if overlap:
-#             ### Overlapping regions in the mosaics
-            
-#             # Creating an array to show the overlap region in the mosaic. The true values 
-#             #   will be set to NaNs later in the code to show the mask overlap region
-#             overlapcutout = np.zeros(shape=PIim1.shape, dtype=bool)
-            
-#             # Setting the overlap regions to be false so later they will show up when
-#             #   the mask is plotted. 
-#             overlapcutout[:1*pf.mosaic_overlap_width,:] = True
-#             overlapcutout[:,0:1*pf.mosaic_overlap_width] = True
-#             overlapcutout[:,-1*pf.mosaic_overlap_width:] = True
-            
-#             # Cutting out the overlap regions from the polarized intensity image that 
-#             #   will be used to detect the point sources within it. 
-#             PIcutout[overlapcutout] = np.nan
-#     elif Mo=="mo1":
-#         PIcutout[759:825,663:732] = np.nan
-#         if overlap:
-#             ### Overlapping regions in the mosaics
-            
-#             # Creating an array to show the overlap region in the mosaic. The true values 
-#             #   will be set to NaNs later in the code to show the mask overlap region
-#             overlapcutout = np.zeros(shape=PIim1.shape, dtype=bool)
-            
-#             # Setting the overlap regions to be false so later they will show up when
-#             #   the mask is plotted. 
-#             overlapcutout[-1*pf.mosaic_overlap_width:,:] = True
-#             overlapcutout[:,:1*pf.mosaic_overlap_width] = True
-#             overlapcutout[:,-1*pf.mosaic_overlap_width:] = True
-            
-#             # Cutting out the overlap regions from the polarized intensity image that 
-#             #   will be used to detect the point sources within it. 
-#             PIcutout[overlapcutout] = np.nan
-#     elif Mo=="mr2":
-        
-#         PIcutout[117:186,285:350] = np.nan
-        
-#         if overlap:
-#             ### Overlapping regions in the mosaics
-            
-#             # Creating an array to show the overlap region in the mosaic. The true values 
-#             #   will be set to NaNs later in the code to show the mask overlap region
-#             overlapcutout = np.zeros(shape=PIim1.shape, dtype=bool)
-            
-#             # Setting the overlap regions to be false so later they will show up when
-#             #   the mask is plotted. 
-#             overlapcutout[:1*pf.mosaic_overlap_width,:] = True
-#             overlapcutout[:,0:1*pf.mosaic_overlap_width] = True
-#             overlapcutout[:,-1*pf.mosaic_overlap_width:] = True
-            
-#             # Cutting out the overlap regions from the polarized intensity image that 
-#             #   will be used to detect the point sources within it. 
-#             PIcutout[overlapcutout] = np.nan
-            
-#     elif Mo=="met2":
-        
-#         PIcutout[400:475,875:950] = np.nan
-        
-#         if overlap:
-#             ### Overlapping regions in the mosaics
-            
-#             # Creating an array to show the overlap region in the mosaic. The true values 
-#             #   will be set to NaNs later in the code to show the mask overlap region
-#             overlapcutout = np.zeros(shape=PIim1.shape, dtype=bool)
-            
-#             # Setting the overlap regions to be false so later they will show up when
-#             #   the mask is plotted. 
-#             overlapcutout[:1*pf.mosaic_overlap_width,:] = True
-#             overlapcutout[:,0:1*pf.mosaic_overlap_width] = True
-#             overlapcutout[:,-1*pf.mosaic_overlap_width:] = True
-            
-#             # Cutting out the overlap regions from the polarized intensity image that 
-#             #   will be used to detect the point sources within it. 
-#             PIcutout[overlapcutout] = np.nan
-#     elif Mo=="mew2":
-        
-#         # PIcutout[400:475,825:950] = np.nan
-        
-#         if overlap:
-#             ### Overlapping regions in the mosaics
-            
-#             # Creating an array to show the overlap region in the mosaic. The true values 
-#             #   will be set to NaNs later in the code to show the mask overlap region
-#             overlapcutout = np.zeros(shape=PIim1.shape, dtype=bool)
-            
-#             # Setting the overlap regions to be false so later they will show up when
-#             #   the mask is plotted. 
-#             overlapcutout[:1*pf.mosaic_overlap_width,:] = True
-#             overlapcutout[:,0:1*pf.mosaic_overlap_width] = True
-#             overlapcutout[400:,-1*pf.mosaic_overlap_width:] = True
-#             overlapcutout[350:400,-1*pf.mosaic_overlap_width +20:] = True
-#             overlapcutout[:350,-1*pf.mosaic_overlap_width:] = True
-            
-#             # Cutting out the overlap regions from the polarized intensity image that 
-#             #   will be used to detect the point sources within it. 
-#             PIcutout[overlapcutout] = np.nan
-#     elif Mo=="ma2":
-        
-#         PIcutout[500:550,100:150] = np.nan
-        
-#         if overlap:
-#             ### Overlapping regions in the mosaics
-            
-#             # Creating an array to show the overlap region in the mosaic. The true values 
-#             #   will be set to NaNs later in the code to show the mask overlap region
-#             overlapcutout = np.zeros(shape=PIim1.shape, dtype=bool)
-            
-#             # Setting the overlap regions to be false so later they will show up when
-#             #   the mask is plotted. 
-#             overlapcutout[:1*pf.mosaic_overlap_width,:] = True
-#             overlapcutout[:,0:1*pf.mosaic_overlap_width] = True
-#             overlapcutout[:,-1*pf.mosaic_overlap_width:] = True
-            
-#             # Cutting out the overlap regions from the polarized intensity image that 
-#             #   will be used to detect the point sources within it. 
-#             PIcutout[overlapcutout] = np.nan
-#     elif Mo=="mc2":
-        
-#         PIcutout[150:250,600:700] = np.nan
-#         # 
-#         if overlap:
-#             ### Overlapping regions in the mosaics
-            
-#             # Creating an array to show the overlap region in the mosaic. The true values 
-#             #   will be set to NaNs later in the code to show the mask overlap region
-#             overlapcutout = np.zeros(shape=PIim1.shape, dtype=bool)
-            
-#             # Setting the overlap regions to be false so later they will show up when
-#             #   the mask is plotted. 
-#             overlapcutout[:1*pf.mosaic_overlap_width,:] = True
-#             overlapcutout[:,0:1*pf.mosaic_overlap_width] = True
-#             overlapcutout[:,-1*pf.mosaic_overlap_width:] = True
-            
-#             # Cutting out the overlap regions from the polarized intensity image that 
-#             #   will be used to detect the point sources within it. 
-#             PIcutout[overlapcutout] = np.nan
-#     elif Mo=="mf2":
-        
-#         PIcutout[830:880,100:170] = np.nan
-#         PIcutout[728:760,694:735] = np.nan
-#         # 
-#         if overlap:
-#             ### Overlapping regions in the mosaics
-            
-#             # Creating an array to show the overlap region in the mosaic. The true values 
-#             #   will be set to NaNs later in the code to show the mask overlap region
-#             overlapcutout = np.zeros(shape=PIim1.shape, dtype=bool)
-            
-#             # Setting the overlap regions to be false so later they will show up when
-#             #   the mask is plotted. 
-#             overlapcutout[:1*pf.mosaic_overlap_width,:] = True
-#             overlapcutout[:,0:1*pf.mosaic_overlap_width] = True
-#             # overlapcutout[555:590,0:1*pf.mosaic_overlap_width-15] = True
-#             # overlapcutout[590:,0:1*pf.mosaic_overlap_width] = True
-#             overlapcutout[:,-1*pf.mosaic_overlap_width:] = True
-            
-#             # Cutting out the overlap regions from the polarized intensity image that 
-#             #   will be used to detect the point sources within it. 
-#             PIcutout[overlapcutout] = np.nan
-            
-    
-#     elif Mo=="mej1":
-
-#         PIcutout[700:760,330:410] = np.nan
-#         if overlap:
-#             ### Overlapping regions in the mosaics
-            
-#             # Creating an array to show the overlap region in the mosaic. The true values 
-#             #   will be set to NaNs later in the code to show the mask overlap region
-#             overlapcutout = np.zeros(shape=PIim1.shape, dtype=bool)
-            
-#             # Setting the overlap regions to be false so later they will show up when
-#             #   the mask is plotted. 
-#             overlapcutout[-1*pf.mosaic_overlap_width:,:] = True
-#             overlapcutout[:,:1*pf.mosaic_overlap_width] = True
-#             overlapcutout[:,-1*pf.mosaic_overlap_width:] = True
-            
-#             # Cutting out the overlap regions from the polarized intensity image that 
-#             #   will be used to detect the point sources within it. 
-#             PIcutout[overlapcutout] = np.nan
-    
-#     elif Mo=="mx1":
-
-#         # PIcutout[700:760,330:410] = np.nan
-#         if overlap:
-#             ### Overlapping regions in the mosaics
-            
-#             # Creating an array to show the overlap region in the mosaic. The true values 
-#             #   will be set to NaNs later in the code to show the mask overlap region
-#             overlapcutout = np.zeros(shape=PIim1.shape, dtype=bool)
-            
-#             # Setting the overlap regions to be false so later they will show up when
-#             #   the mask is plotted. 
-#             overlapcutout[-1*pf.mosaic_overlap_width:,:] = True
-#             overlapcutout[:,:1*pf.mosaic_overlap_width] = True
-#             # overlapcutout[:,-1*pf.mosaic_overlap_width:] = True
-#             overlapcutout[:440,-1*pf.mosaic_overlap_width:] = True
-#             overlapcutout[440:495,-1*pf.mosaic_overlap_width +30:] = True
-#             overlapcutout[495:,-1*pf.mosaic_overlap_width:] = True
-            
-#             # Cutting out the overlap regions from the polarized intensity image that 
-#             #   will be used to detect the point sources within it. 
-#             PIcutout[overlapcutout] = np.nan
-    
-#     elif Mo=="mg0":
-#         if overlap:
-#             ### Overlapping regions in the mosaics
-            
-#             # Creating an array to show the overlap region in the mosaic. The true values 
-#             #   will be set to NaNs later in the code to show the mask overlap region
-#             overlapcutout = np.zeros(shape=PIim1.shape, dtype=bool)
-            
-#             # Setting the overlap regions to be false so later they will show up when
-#             #   the mask is plotted. 
-#             overlapcutout[-379:,:] = True
-#             # overlapcutout[:,:1*pf.mosaic_overlap_width] = True
-#             # overlapcutout[:,-1*pf.mosaic_overlap_width:] = True
-            
-#             # Cutting out the overlap regions from the polarized intensity image that 
-#             #   will be used to detect the point sources within it. 
-#             PIcutout[overlapcutout] = np.nan
-    
-#     else:
-        
-#         # If there are NaN values in the array, see if in the botton right corner
-#         #   (indicating the bottom of the mosaic should be cut out) or the top right
-#         #   corner (indicating the top should be cut out). 
-#         if np.isnan(PIim1).any():  
-#             if overlap:
-#                 if np.isnan(PIim1[0,0]):
-#                     ### Overlapping regions in the mosaics
-                    
-#                     # Creating an array to show the overlap region in the mosaic. The true values 
-#                     #   will be set to NaNs later in the code to show the mask overlap region
-#                     overlapcutout = np.zeros(shape=PIim1.shape, dtype=bool)
-#                     # Setting the overlap regions to be false so later they will show up when
-#                     #   the mask is plotted. 
-#                     overlapcutout[-1*pf.mosaic_overlap_width:,:] = True
-#                     overlapcutout[:,:1*pf.mosaic_overlap_width] = True
-#                     overlapcutout[:,-1*pf.mosaic_overlap_width:] = True
-                    
-                   
-    
-#                     # Cutting out the overlap regions from the polarized intensity image that 
-#                     #   will be used to detect the point sources within it. 
-#                     PIcutout[overlapcutout] = np.nan
-#                 elif np.isnan(PIim1[-1,0]):
-#                     ### Overlapping regions in the mosaics
-                    
-#                     # Creating an array to show the overlap region in the mosaic. The true values 
-#                     #   will be set to NaNs later in the code to show the mask overlap region
-#                     overlapcutout = np.zeros(shape=PIim1.shape, dtype=bool)
-#                     # Setting the overlap regions to be false so later they will show up when
-#                     #   the mask is plotted. 
-#                     overlapcutout[:1*pf.mosaic_overlap_width,:] = True
-#                     overlapcutout[:,0:1*pf.mosaic_overlap_width] = True
-#                     overlapcutout[:,-1*pf.mosaic_overlap_width:] = True
-    
-                   
-#                     # Cutting out the overlap regions from the polarized intensity image that 
-#                     #   will be used to detect the point sources within it. 
-#                     PIcutout[overlapcutout] = np.nan 
-                    
-#                 else:
-#                     print("There are NaNs somewhere in mosaic "+Mo.upper())
-#                     # Creating a copy array so that they all have the same name 
-#                     PIcutout= np.copy(PIim1)
-            
-        
-        
-        
-        
-        
-        
-        
-#         # Indicating no NaNs were found in the image. This will only apply to the halo mosaics
-#         else:
-#             # Creating a copy array so that they all have the same name 
-#             PIcutout =np.copy(PIim1)
-#             print("No cut outs were made to mosaic " + Mo.upper())
-#             if overlap:
-#                 ### Overlapping regions in the mosaics
-                
-#                 # Creating an array to show the overlap region in the mosaic. The true values 
-#                 #   will be set to NaNs later in the code to show the mask overlap region
-#                 overlapcutout = np.zeros(shape=PIim1.shape, dtype=bool)
-#                 # Setting the overlap regions to be false so later they will show up when
-#                 #   the mask is plotted. 
-#                 overlapcutout[:1*pf.mosaic_overlap_width,:] = True
-#                 if Mo[-1]!='5':
-#                     overlapcutout[-1*pf.mosaic_overlap_width:,:] = True
-#                 overlapcutout[:,0:1*pf.mosaic_overlap_width] = True
-#                 overlapcutout[:,-1*pf.mosaic_overlap_width:] = True
-                
-        
-#                 # Cutting out the overlap regions from the polarized intensity image that 
-#                 #   will be used to detect the point sources within it. 
-#                 PIcutout[overlapcutout] = np.nan
-                
-                
-                
-#     # Creating an array of values where indicating where there is a number vs a NaN
-#     maskrev = np.isfinite(PIcutout)
-#     # Excluding the orignal NaN values from the mask (so we can clearly see
-#     #    where there is no data)
-#     maskrev[OGNaNs] = True
-#     # Creating an initial array that will show be the masked area of the mosaic
-#     maskforplot = np.ones(shape=(PIim1.shape))
-#     # Setting the areas where there was a number in the PI to not be part of the mask. 
-#     maskforplot[maskrev] = np.nan
-    
-#     # Creating an array for the overlap mask to be added to plots, then 
-#     #    using the previously calculated overlap region (mosaic dependant)
-#     #    to create the values in the plot. NaNs will not appear in the mask, 
-#     #    but the zeros will.
-#     if overlap:
-#         maskforoverlap = np.zeros(shape=PIim1.shape)
-#         maskforoverlap[np.invert(overlapcutout)] = np.nan
-    
-#     # Creating an array of values where indicating where there is a number vs a NaN
-#     maskrev = np.isfinite(PIcutout)
-#     # Excluding the orignal NaN values from the mask (so we can clearly see
-#     #    where there is no data)
-#     maskrev[OGNaNs] = True
-#     # Cutting out the overlap region so that they don't overlap (important
-#     #    for matching colormaps)
-#     if overlap:
-#         maskrev[overlapcutout] = True
-#     # Creating an initial array that will show be the masked area of the mosaic
-#     maskforplot = np.ones(shape=(PIim1.shape))
-#     # Setting the areas where there was a number in the PI to not be part of the mask. 
-#     maskforplot[maskrev] = np.nan
-    
-#     # Only returning the overlap cut out if set to. 
-#     if overlap:
-#         return PIcutout, overlapcutout, maskforoverlap, maskforplot
-#     else: 
-#         return PIcutout, maskforplot
   
 
 
 
 
-# the following only has large objects masked out
+
 def cut_out_for_mosaic(PIim1,Mo,  overlap=True):
     """ This function produces a mask cutouts for mosaics that will remove any previously
     identified artifacts, and removes the overlap region if set to. Anywhere that is masked
@@ -2217,11 +1244,7 @@ def cut_out_for_mosaic(PIim1,Mo,  overlap=True):
             PIcutout[overlapcutout] = np.nan
     elif Mo=='mn1':
         
-        # Cutting out the sections with leakage, HII regions, or have curved edges leading to false detections
         
-        # PIcutout[800:840, 300:350] = np.nan
-        # PIcutout[645:705, 450:500] = np.nan
-        # PIcutout[720:810, 770:830] = np.nan
         
         if overlap:
             ### Overlapping regions in the mosaics
@@ -2454,7 +1477,7 @@ def cut_out_for_mosaic(PIim1,Mo,  overlap=True):
             
     elif Mo=="mer1":
         PIcutout[710:730,627:670] = np.nan
-        # PIcutout[550:600,325:400] = np.nan
+        
         if overlap:
             ### Overlapping regions in the mosaics
             
@@ -2513,7 +1536,7 @@ def cut_out_for_mosaic(PIim1,Mo,  overlap=True):
             
     elif Mo=="mez2":
         
-        # PIcutout[920:950,775:805] = np.nan
+        
         if overlap:
             ### Overlapping regions in the mosaics
             
@@ -2552,7 +1575,7 @@ def cut_out_for_mosaic(PIim1,Mo,  overlap=True):
     elif Mo=="mv1":
         PIcutout[483:522,657:705] = np.nan
         PIcutout[210:270,390:440] = np.nan
-        # PIcutout[660:690,615:640] = np.nan
+        
         if overlap:
             ### Overlapping regions in the mosaics
             
@@ -2593,7 +1616,7 @@ def cut_out_for_mosaic(PIim1,Mo,  overlap=True):
     elif Mo=="mn2":
         
         PIcutout[900:,132:350] = np.nan
-        # PIcutout[150:200,770:830] = np.nan
+        
         
         if overlap:
             ### Overlapping regions in the mosaics
@@ -2672,7 +1695,7 @@ def cut_out_for_mosaic(PIim1,Mo,  overlap=True):
             PIcutout[overlapcutout] = np.nan
     elif Mo=="mew2":
         
-        # PIcutout[400:475,825:950] = np.nan
+        
         
         if overlap:
             ### Overlapping regions in the mosaics
@@ -2694,7 +1717,7 @@ def cut_out_for_mosaic(PIim1,Mo,  overlap=True):
             PIcutout[overlapcutout] = np.nan
     elif Mo=="ma2":
         
-        # PIcutout[500:550,100:150] = np.nan
+        
         
         if overlap:
             ### Overlapping regions in the mosaics
@@ -2714,8 +1737,7 @@ def cut_out_for_mosaic(PIim1,Mo,  overlap=True):
             PIcutout[overlapcutout] = np.nan
     elif Mo=="mc2":
         
-        # PIcutout[150:250,600:700] = np.nan
-        # 
+        
         if overlap:
             ### Overlapping regions in the mosaics
             
@@ -2734,9 +1756,7 @@ def cut_out_for_mosaic(PIim1,Mo,  overlap=True):
             PIcutout[overlapcutout] = np.nan
     elif Mo=="mf2":
         
-        # PIcutout[830:880,100:170] = np.nan
-        # PIcutout[728:760,694:735] = np.nan
-        # 
+        
         if overlap:
             ### Overlapping regions in the mosaics
             
@@ -2779,7 +1799,7 @@ def cut_out_for_mosaic(PIim1,Mo,  overlap=True):
     
     elif Mo=="mx1":
 
-        # PIcutout[700:760,330:410] = np.nan
+        
         if overlap:
             ### Overlapping regions in the mosaics
             
@@ -2791,7 +1811,7 @@ def cut_out_for_mosaic(PIim1,Mo,  overlap=True):
             #   the mask is plotted. 
             overlapcutout[-1*pf.mosaic_overlap_width:,:] = True
             overlapcutout[:,:1*pf.mosaic_overlap_width] = True
-            # overlapcutout[:,-1*pf.mosaic_overlap_width:] = True
+            
             # A cut out is made in the following so that KR 144 can be detected. 
             overlapcutout[:440,-1*pf.mosaic_overlap_width:] = True
             overlapcutout[440:495,-1*pf.mosaic_overlap_width +30:] = True
@@ -2812,8 +1832,7 @@ def cut_out_for_mosaic(PIim1,Mo,  overlap=True):
             # Setting the overlap regions to be false so later they will show up when
             #   the mask is plotted. 
             overlapcutout[-379:,:] = True
-            # overlapcutout[:,:1*pf.mosaic_overlap_width] = True
-            # overlapcutout[:,-1*pf.mosaic_overlap_width:] = True
+            
             
             # Cutting out the overlap regions from the polarized intensity image that 
             #   will be used to detect the point sources within it. 
@@ -2936,22 +1955,7 @@ def cut_out_for_mosaic(PIim1,Mo,  overlap=True):
     else: 
         return PIcutout, maskforplot
     
-# PIcutout, overlapcutout, maskforoverlap, maskforplot, = cut_out_for_mosaic(Pi, "MEZ1")
 
-# plt.imshow(PIcutout)
-# plt.show()
-# Pi= PIimg("ma1",False)
-
-# # mosaic_edge_cut_out(PI_image, Mo,  plot=False,)
-# PIcut, mask = cut_out_for_mosaic(Pi, "ma1",overlap=False)
-# t0 = time.time()
-# Identify_Point_Sources(PIcut,vmax=0.006)
-# t1 = time.time()
-# print(f"PI takes {t1-t0} seconds")
-# t2 = time.time()
-# Identify_Point_Sources(Si, vmax=0.03,threshold=1.5/2000)
-# t3 = time.time()
-# print(f"Ti takes {t3-t2} seconds")
 
 def Potential_Twin_Finder(Mo, 
                           Plot_twins= True, 
@@ -3037,10 +2041,10 @@ Other Parameters:
     from parameters_file import max_dist_btw_sources as max_dist
     
 
-    t0 = time.time()
+   
     
     
-    # beam_radius = 0.5#pixel-ish # the smallest beam size is 1.05 so half that is 0.5
+    
     max_radius = float(pf.max_radius)
     
 
@@ -3049,7 +2053,7 @@ Other Parameters:
     #   different codes. I will probably end putting the detection of twins into a function
     #   or class sometime soon. All the functions have document string with the input 
     #   parameters defined, and what it returns. 
-    # import Functions as fc
+    
     
     # Importing the astro functions needed from the astro.py library. 
     from astropy.io import fits
@@ -3082,13 +2086,11 @@ Other Parameters:
     else:
         PIcutout, maskforplot = cut_out_for_mosaic(
             PIim1=PIim1, Mo =Mo,  overlap=mosaic_overlap)
-    # t1 = time.time()
-    # print("line 1453 first part: {t1-t0}")
+    
 
     init_sources = Identify_Point_Sources(PIcutout, 
                                         plot=pf.separate_individual_source_plot, threshold=pf.threshold)
-    # t2 = time.time()
-    # print(f"line 1458 LoG time: {t2-t1}")
+    
     
                 
                 
@@ -3128,7 +2130,7 @@ Other Parameters:
     # Determining the width of a pixel in order to determine the distance between
     #   twin pairs. 
     pixel_width = wx[0]-wx[1]
-    # print("line 1516: pixel width", pixel_width)
+    
         
     # Creating a list to store the distance between the twins (I might make the two list one later)
     distlist = []
@@ -3150,8 +2152,7 @@ Other Parameters:
     # Initialing an array to store the sources in 
     sources_list=[]
     
-    # t3 =time.time()
-    # print(f"L1521 third part: {t3-t2}")
+    
     
     for n, s in enumerate(sources):
         # Getting the pixel coordinates and HWHM of the source
@@ -3332,8 +2333,7 @@ Other Parameters:
             
             
   
-    # t4 = time.time()
-    # print(f"L 1753 loop part: {t4-t3}")
+   
         
             
     
@@ -3354,12 +2354,10 @@ Other Parameters:
        
        wx, wy, f, meh = w.all_pix2world(ticksx, ticksy,0,0,1)
        
-       # print("pixel_width:", wx[1]-wx[0])
-       # print(wx[-1]-wx[0])
+      
        
        
        # Setting the number of ticks to be displayed on the plot
-       # tck = [n for n in range(0,1024,pf.num_of_pixels_btw_ticks)]
        tck = [n for n in range(0,len(PIim1[0]),1)]
        # Getting the labels of the x and y ticks
        tickx_labels = np.round(wx[tck],2)
@@ -3395,10 +2393,7 @@ Other Parameters:
        ax[0].set_title("Polarized Intensity", fontsize=pf.PTF_titlefontsize)
        ax[0].set_xticks(tck, tickx_labels)
        ax[0].set_yticks(tck, ticky_labels)
-       # ax[0].set_xticklabels(tickx_labels)
-       # ax[0].set_yticklabels(ticky_labels)
-       # ax[0].set_xlim(np.min(tck), np.max(tck))
-       # ax[0].set_ylim(np.min(tck), np.max(tck))
+       
        ax[0].set_xlabel(r"Longitude ($\degree$)", fontsize=pf.PTF_axis_font_size)
        ax[0].set_ylabel(r"Lattitude ($\degree$)", fontsize=pf.PTF_axis_font_size)
        fig.colorbar(Pimage, ax=ax[0], label="Jy/beam", shrink=0.74)
@@ -3415,11 +2410,7 @@ Other Parameters:
        
        ax[1].set_xticks(tck, tickx_labels)
        ax[1].set_yticks(tck, ticky_labels)
-       # ax[1].set_xticklabels(tickx_labels)
-       # ax[1].set_yticklabels(ticky_labels)
-       # ax[1].set_xlim(np.min(tck), np.max(tck))
-       # ax[1].set_ylim(np.min(tck), np.max(tck))
-       # axis = ax[1]
+      
        fig.colorbar(Timage, ax=ax[1], label="Jy/beam", shrink=0.74)
        
        # Creating a list of elements to be added to the legend. 
@@ -3485,7 +2476,7 @@ Other Parameters:
            lmax = tickx_labels_AGN[0]
            bmin, bmax = ticky_labels_AGN[0], ticky_labels_AGN[-1]
            
-           # print(get_AGNs_simbad(lmin, lmax, bmin, bmax))
+           
            
            
            AGNs, dfAGNs = get_AGNs_simbad(lmin, lmax, bmin, bmax)
@@ -3511,14 +2502,7 @@ Other Parameters:
                                           label="AGN from SIMBAD",
                                    markerfacecolor='w', markersize=15))
     
-       # if plot_individual_sources:
-       #     box_anchor= (0.922,0.825)
-       # else:
-       #     box_anchor=(0.80,0.825)
-       # # The legend code was based off the code from the webpage: https://matplotlib.org/stable/tutorials/intermediate/legend_guide.html 
-       # fig.legend(handles=legend_elements, loc="lower right", 
-       #              bbox_to_anchor=box_anchor,bbox_transform=fig.transFigure, 
-       #              ncol=4, fontsize='large')
+      
        
        if len(AGNs)==0:
            if plot_individual_sources:
@@ -3554,8 +2538,7 @@ Other Parameters:
     if len(twinlist) ==0:
         print("There were no twins detected in mosaic "+Mo.upper())
         
-    # t5 = time.time()
-    # print(f"L 1923 plotting time: {t5-t4}")
+    
         
     # Determining which if the lists to return. 
     # Just gal_coord
@@ -3568,12 +2551,7 @@ Other Parameters:
     else:   
         return twinlist, distlist, twincentres, twinlist_galcoord, distlist_galcoord, twincentres_galcoord
 
-# Potential_Twin_Finder("mf2", plot_individual_sources=False)
-# t0 = time.time()
-# Potential_Twin_Finder("mf1", plot_individual_sources=True)
-# t1 = time.time()
-# print(f"It took {t1-t0} seconds")
-# Potential_Twin_Finder("mx1", plot_individual_sources=True)
+
 
 
 
@@ -3736,12 +2714,11 @@ def Manual_Twin_Finder(Mo,mosaic_overlap=True):
     
     fig.tight_layout()
     plt.draw()
-    # plt.show()
+    
            
    
     
-# mosaics = ["mk2", "mh1", "mo1", "mew2", "mr2",'mex2', 'mu2', 'mh1']
-# Manual_Twin_Finder("met1")                
+           
  
 def list_mosaics(direction="LtoR", include_halo=True, include_SLE = True):
     "A function to give a list of mosaics. Direction is either LtoR (left to right) or RtoL (right to left)"
@@ -3771,8 +2748,7 @@ def list_mosaics(direction="LtoR", include_halo=True, include_SLE = True):
         return list_mosaics
     else:
         return list_mosaics.reverse()
-# print(list_mosaics())
-# print(len(list_mosaics()))
+
 
 
 def random_mosaics(n=3, exclude=None):
@@ -3800,9 +2776,7 @@ def random_mosaics(n=3, exclude=None):
 
     return random_mosaics
 
-# print(random_mosaics(1))
 
-# mosaics = ["mk2", "mh2", "mo1", "mew2", "mr2"]
 def binary_classification_dictionaries():
     
     
@@ -3890,7 +2864,7 @@ def beam_radii(mosaic, width_in_arcminutes=False):
     
     
     numerator = (58**2)/(18**2)
-    # print("reverse: ", np.arccos(numerator/3.3))
+    
     beam_size= (numerator)/(np.sin(np.radians(dec)))
     
     print("beam_size: ", beam_size, " pixels")
@@ -3899,7 +2873,7 @@ def beam_radii(mosaic, width_in_arcminutes=False):
     if width_in_arcminutes:
         return radi*17.95688
     
-    radi_pixel= radi#/17.95688
+    radi_pixel= radi
     return radi_pixel
 
 # Note this was taken from subroutines in Jo-Anne and Cameron's code, converted by Dylan.  
@@ -3922,7 +2896,7 @@ def string_normalise(string_bad, expected_len, negatives=False, front_load=False
     if string_bad[0] != '-' and negatives:
         string_bad = ' ' + string_bad
     string_len = len(string_bad)
-    # print("string_length: ", string_len)
+    
     len_diff = expected_len - string_len  # expected_len must be at least as large as string_len
     whitespace = ' ' * len_diff  # Interestingly, Python lets you multiply strings by ints and it just repeats the string
     if front_load:
@@ -3933,7 +2907,7 @@ def string_normalise(string_bad, expected_len, negatives=False, front_load=False
 
 
 
-# Note this was taken from subroutines in Jo-Anne and Cameron's code, converted by Dylan.
+# Note this was taken from subroutines in Jo-Anne and Cameron's code, converted by Maggie Tuttle.
 def nround(number):
     """As I've recently learned, the built in Python round() and int() functions
     both round .5s down instead of up, so round(2.5) = 2, when it should really be 3.
@@ -3973,8 +2947,7 @@ def find_pixel_coordinates(long, lat, mosaic):
     #Getting the mosaic information for the coordinates 
     headerI = hdu_listI[0].header
        
-    # print(headerI)
-    # print(repr(headerI))
+   
     # getting and removing unnecessary dimensions from the data
     imI = np.squeeze(hdu_listI[0].data)
 
@@ -3999,8 +2972,7 @@ def find_pixel_coordinates(long, lat, mosaic):
     unrounded_x = wx[tck]
     unrounded_y = wy[tck]
     
-    # print(tickx_labels)
-    # print(long)
+    
 
     x = np.where(tickx_labels == round(long,2) )[0].tolist()#+0.01 and tickx_labels.any() > long-0.01)
     y = np.where(ticky_labels == round(lat, 2))[0].tolist()
@@ -4045,8 +3017,7 @@ def find_gal_coordinates(x, y, mosaic):
     #Getting the mosaic information for the coordinates 
     headerI = hdu_listI[0].header
        
-    # print(headerI)
-    # print(repr(headerI))
+    
     # getting and removing unnecessary dimensions from the data
     imI = np.squeeze(hdu_listI[0].data)
 
@@ -4075,7 +3046,7 @@ def find_gal_coordinates(x, y, mosaic):
     
     return X, Y
     
-# find_gal_coordinates(349,670,"mf2")
+
 
 def l_b_TI_PI_SN_of_point(xcoor, ycoor, mosaic):
     """This function takes in the x and y coordinates of a point in the given mosaic
@@ -4169,18 +3140,7 @@ def write_dat_file(mosaic, point_dataset):
 # =============================================================================
     shape=  point_array.shape
     
-    #old version
-    # if len(shape) == 1:
-    #     single_point = True
-    #     l, b, xpix, ypix, PI, TI, SN = point_dataset[0],point_dataset[1],point_dataset[2],\
-    #         point_dataset[3],point_dataset[4],point_dataset[5],point_dataset[6],
-    #     # print("line 4143")
-    #     # sys.exit()
-    # else:
-    #     single_point = False
-    #     l, b, xpix, ypix, PI, TI, SN = point_array[:,0], point_array[:,1],\
-    #     point_array[:,2],point_array[:,3],point_array[:,4],point_array[:,5],\
-    #         point_array[:,6]
+    
     
     if len(shape) == 1:
         single_point = True
@@ -4195,7 +3155,7 @@ def write_dat_file(mosaic, point_dataset):
             point_array[:,6]
     
     
-    # print("l: ", l)
+    
 # =============================================================================
 #     # Writing the file
 # =============================================================================
@@ -4259,7 +3219,7 @@ Returns:
         
     #Getting the mosaic information for the coordinates from the header
     headerI = hdu_listI[0].header
-    # print(repr(headerI))
+    
     #   getting and removing unnecessary dimensions from the data
     imI = np.squeeze(hdu_listI[0].data)
 
@@ -4292,9 +3252,9 @@ def GAL_to_RADEC(L,B, in_deg = False):
     
     from astropy.coordinates import SkyCoord
     import astropy.units as u
-    # gal_cor = SkyCoord(l = L*u.deg, b=B*u.deg, frame='galactic')
     
-    # equatorial_cor = gal_cor.transform_to("icrs")
+    
+    
     new_coord = SkyCoord(l=L*u.degree, b=B*u.degree, frame="galactic")
     ICRS = new_coord.icrs
     ra, dec = ICRS.ra, ICRS.dec
@@ -4333,7 +3293,7 @@ def check_true_detection(detected_twins_df):
     from directories import true_twin_csv_dir 
     
     # importing the true twins as a dataframe
-    true_df = pd.read_csv(true_twin_csv_dir)#, index_col="n")
+    true_df = pd.read_csv(true_twin_csv_dir)
     
     #Pandas imports empty values as NaNs, the next little bit of code is converting them back empty or None values
     true_df = true_df.fillna("").copy()
