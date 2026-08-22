@@ -40,3 +40,9 @@ This repeats for all pairs in the mosaic, the program then adds the information 
 Once all the pairs have been examine in the mosaic, the program repeats the steps for the next mosaic in the lst. 
 
 A csv file containing all the pair information is found by the path: csv_dir + filename, filename is entered by the user. 
+
+
+## Possible future improvements/updates
+* Optimize the way images are produced and how astropy is used.
+* Improve user interface
+* Introduce option for cutouts and mosaic images to be saved automatically in the automatic pair finder script. 
