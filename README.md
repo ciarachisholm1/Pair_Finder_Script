@@ -34,7 +34,7 @@ To run this program, open the file `Twinfinding_classification_latest.py` and ru
 
 The program will then produce an image of the mosaic in both polarised intensity (PI) and Stokes I (SI) with the detected pairs and solo sources highlighted. The program then asks if there are any pairs missing, if there are none enter 0. If more time to manipulate the graphs is required to determine if any are missing, enter a "?". 
 
-The program will then produce cutouts of the detected pairs in PI and SI and in both 2D and 3D. If the pair is a true pair, it will be given a classification greater than 500. If it fails any of the tests (See Ciara Chisholm's MSc thesis for details on the classification scheme). If the classification is correct the user can simply hit enter to move onto the next pair, else enter the proper classification number. 
+The program will then produce cutouts of the detected pairs in PI and SI and in both 2D and 3D. If the pair is a true pair, it will be given a classification greater than 500. If it fails any of the tests (see Ciara Chisholm's MSc thesis for details on the classification scheme). If the classification is correct the user can simply hit enter to move onto the next pair, else enter the proper classification number. 
 This repeats for all pairs in the mosaic, the program then adds the information to the csv. The csv is updated after all the pairs in a mosaic have been examined so if any issues occur during the process, the user does not need to re-examine every mosaic. 
 
 Once all the pairs have been examine in the mosaic, the program repeats the steps for the next mosaic in the lst. 
