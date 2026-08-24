@@ -29,7 +29,7 @@ import pandas as pd
 import time 
 
 import Functions as fc
-
+from RM_StoN import RM_code_StoN
 from astropy.io import fits
 from astropy.wcs import WCS
 
@@ -250,7 +250,7 @@ Other Parameters:
     """
     import parameters_file as pf
     from parameters_file import max_dist_btw_sources as max_dist
-    
+    from RM_StoN import RM_code_StoN
 
    
     max_radius = float(pf.max_radius)
@@ -294,13 +294,17 @@ Other Parameters:
     ###     This should eliminate a lot of extended source detections. 
     # Creating an empty list to store the coordinates in
     sources_list=[]
-    TI_image = fc.T_Inten(Mo, plot=0) # Loading the total intensity image. 
-    for s in init_sources: # looping through all the detected sources to get coordinates
+    # looping through all the detected sources to get coordinates
+    for s in init_sources: 
         Y,X,r = s
         y,x = int(Y), int(X)
         PI_peak = PIim1[y,x] # finding the peak value in PI
         TI_peak = TI_image[y,x] # find the the peak value in TI
-        if TI_peak > pf.ratio_TI_to_PI*PI_peak: # only adding the source if it's sufficiently large in TI
+        
+        # Checking the source has sufficient signal to noise.
+        StoN_peak, StoN_peak_pass =RM_code_StoN(Mo,y,x, return_surrounding_pixels_above_threshold=True)
+        
+        if TI_peak > pf.ratio_TI_to_PI*PI_peak and StoN_peak_pass: # only adding the source if it's sufficiently large in TI and StoN
             sources_list += [[y,x,r]]
     # converting the list to an array. 
     sources=np.array(sources_list) 
